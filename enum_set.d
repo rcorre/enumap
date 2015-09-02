@@ -1,0 +1,229 @@
+module enum_set;
+
+import std.conv   : to;
+import std.traits : EnumMembers;
+
+struct EnumSet(K, V) {
+  enum length = EnumMembers!K.length;
+
+  /// Assuming Element consists of air, earth, water, and fire:
+  unittest {
+    static assert(EnumSet!(Element, int).length == 4);
+  }
+
+  private V[length] _store;
+
+  /// Construct an EnumSet from a static array.
+  this(V[length] values) {
+    _store = values;
+  }
+
+  ///
+  unittest {
+    auto set = EnumSet!(Element, int)([1, 2, 3, 4]);
+
+    assert(set[Element.air]   == 1);
+    assert(set[Element.earth] == 2);
+    assert(set[Element.water] == 3);
+    assert(set[Element.fire]  == 4);
+  }
+
+  /// Construct an EnumSet from an associative array.
+  this(V[K] dict) {
+    foreach(pair ; dict.byKeyValue) this[pair.key] = pair.value;
+  }
+
+  ///
+  unittest {
+    with (Element) {
+      EnumSet!(Element, int) set = [ air: 1, earth: 2, water: 3 ];
+
+      assert(set[air]   == 1);
+      assert(set[earth] == 2);
+      assert(set[water] == 3);
+      assert(set[fire]  == 0); // unspecified values default to V.init
+    }
+  }
+
+  /// Assign an EnumSet from a static array.
+  void opAssign(V[length] values) {
+    _store = values;
+  }
+
+  ///
+  unittest {
+    EnumSet!(Element, int) set;
+    set = [1, 2, 3, 4];
+
+    with (Element) {
+      assert(set[air]   == 1);
+      assert(set[earth] == 2);
+      assert(set[water] == 3);
+      assert(set[fire]  == 4);
+    }
+  }
+
+  /// Assign an EnumSet from an associative array.
+  void opAssign(V[K] dict) {
+    foreach(pair ; dict.byKeyValue) this[pair.key] = pair.value;
+  }
+
+  ///
+  unittest {
+    EnumSet!(Element, int) set;
+
+    with (Element) {
+      set = [ air: 1, earth: 2, water: 3, fire: 4 ];
+
+      assert(set[air]   == 1);
+      assert(set[earth] == 2);
+      assert(set[water] == 3);
+      assert(set[fire]  == 4);
+    }
+  }
+
+  /// Get the value at the index specified by an enum member.
+  auto opIndex(K key) {
+    return _store[key];
+  }
+
+  ///
+  unittest {
+    auto elements = EnumSet!(Element, int)([Element.fire: 4]);
+    assert(elements[Element.fire] == 4);
+  }
+
+  /// Set the value at the index specified by an enum member.
+  auto opIndexAssign(V value, K key) {
+    return _store[key] = value;
+  }
+
+  ///
+  unittest {
+    EnumSet!(Element, int) elements;
+
+    elements[Element.earth] = 5;
+    assert(elements[Element.earth] == 5);
+  }
+
+  /// Get the value at the index specified by the name of an enum member.
+  auto opDispatch(string s)() {
+    enum key = s.to!K;
+    return this[key];
+  }
+
+  ///
+  unittest {
+    EnumSet!(Element, int) elements;
+    elements.water = 5;
+    assert(elements.water == 5);
+  }
+
+  /// Set the value at the index specified by the name of an enum member.
+  auto opDispatch(string s)(V val) {
+    enum key = s.to!K;
+    return this[key] = val;
+  }
+
+  ///
+  unittest {
+    EnumSet!(Element, int) elements;
+    elements.water = 5;
+    assert(elements.water == 5);
+  }
+
+  /// Get a slice of all the values.
+  auto opSlice() { return _store[]; }
+
+  ///
+  unittest {
+    EnumSet!(Element, int) elements = [1, 2, 3, 4];
+    assert(elements[] == [1, 2, 3, 4]);
+  }
+
+  /// Apply an array-wise operation between two `EnumSet`s.
+  auto opBinary(string op)(typeof(this) other)
+    if (is(typeof(mixin("V.init"~op~"V.init")) : V))
+  {
+    V[length] result = mixin("_store[]"~op~"other._store[]");
+    return typeof(this)(result);
+  }
+
+  ///
+  unittest {
+    EnumSet!(Element, int) base  = [Element.water : 4, Element.air : 3];
+    EnumSet!(Element, int) bonus = [Element.water : 5, Element.fire : 2];
+
+    auto sum = base + bonus;
+    auto diff = base - bonus;
+    auto prod = base * bonus;
+
+    assert(sum.water == 4 + 5);
+    assert(sum.air   == 3 + 0);
+    assert(sum.fire  == 0 + 2);
+    assert(sum.earth == 0 + 0);
+
+    assert(diff.water == 4 - 5);
+    assert(diff.air   == 3 - 0);
+    assert(diff.fire  == 0 - 2);
+    assert(diff.earth == 0 - 0);
+
+    assert(prod.water == 4 * 5);
+    assert(prod.air   == 3 * 0);
+    assert(prod.fire  == 0 * 2);
+    assert(prod.earth == 0 * 0);
+  }
+
+  /// Perform an in-place operation.
+  auto opOpAssign(string op)(typeof(this) other)
+    if (is(typeof(this.opBinary!op(other)) : typeof(this)))
+  {
+    this = this.opBinary!op(other);
+  }
+
+  ///
+  unittest {
+    EnumSet!(Element, int) base  = [Element.water : 4, Element.air : 3];
+    EnumSet!(Element, int) bonus = [Element.water : 5, Element.fire : 2];
+
+    base += bonus;
+
+    assert(base.water == 4 + 5);
+    assert(base.air   == 3 + 0);
+    assert(base.fire  == 0 + 2);
+    assert(base.earth == 0 + 0);
+
+    base -= bonus; // cancel out the previous addition
+
+    assert(base.water == 4);
+    assert(base.air   == 3);
+    assert(base.fire  == 0);
+    assert(base.earth == 0);
+
+    base *= bonus;
+    assert(base.water == 4 * 5);
+    assert(base.air   == 3 * 0);
+    assert(base.fire  == 0 * 2);
+    assert(base.earth == 0 * 0);
+  }
+
+  /// Perform a unary operation on each entry.
+  auto opUnary(string op)()
+    if (is(typeof(mixin(op~"V.init")) : V))
+  {
+    V[length] result = mixin(op~"_store[]");
+    return typeof(this)(result);
+  }
+
+  unittest {
+    EnumSet!(Element, int) elements  = [Element.water : 4, Element.air : 3];
+
+    assert(-elements.water == -4);
+    assert(-elements.air   == -3);
+  }
+}
+
+version (unittest) {
+  private enum Element { air, earth, water, fire };
+  private EnumSet!(Element, int) triggerTest;
+}
