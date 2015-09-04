@@ -1,6 +1,8 @@
 module enum_set;
 
 import std.conv   : to;
+import std.range  : enumerate, walkLength, isInputRange, ElementType;
+import std.format : format;
 import std.traits : EnumMembers;
 
 struct EnumSet(K, V) {
@@ -43,6 +45,24 @@ struct EnumSet(K, V) {
       assert(set[water] == 3);
       assert(set[fire]  == 0); // unspecified values default to V.init
     }
+  }
+
+  /// Assign from a range with a number of elements exactly matching `length`.
+  this(R)(R values) if (isInputRange!R && is(ElementType!R : V)) {
+    assert(values.walkLength == length,
+        "range contains %d elements, expected exactly %d"
+        .format(values.walkLength, length));
+
+    foreach (i, val ; values.enumerate) _store[i] = val;
+  }
+
+  unittest {
+    import std.range : repeat;
+    EnumSet!(Element, int) elements = 9.repeat(4);
+    assert(elements.air   == 9);
+    assert(elements.earth == 9);
+    assert(elements.water == 9);
+    assert(elements.fire  == 9);
   }
 
   /// Assign an EnumSet from a static array.
