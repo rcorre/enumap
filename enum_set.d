@@ -69,12 +69,12 @@ struct EnumSet(K, V) {
     assert(elements.fire  == 9);
   }
 
-  /// Assign an EnumSet from a static array.
-  void opAssign(V[length] values) {
-    _store = values;
+  /// An EnumSet can be assigned from any type if can be constructed from.
+  void opAssign(T)(T val) if (is(typeof(typeof(this)(val)))) {
+    this = typeof(this)(val);
   }
 
-  ///
+  /// Assign an EnumSet from a static array.
   unittest {
     EnumSet!(Element, int) set;
     set = [1, 2, 3, 4];
@@ -88,11 +88,6 @@ struct EnumSet(K, V) {
   }
 
   /// Assign an EnumSet from an associative array.
-  void opAssign(V[K] dict) {
-    foreach(pair ; dict.byKeyValue) this[pair.key] = pair.value;
-  }
-
-  ///
   unittest {
     EnumSet!(Element, int) set;
 
@@ -103,6 +98,22 @@ struct EnumSet(K, V) {
       assert(set[earth] == 2);
       assert(set[water] == 3);
       assert(set[fire]  == 4);
+    }
+  }
+
+  /// Assign an EnumSet from a range
+  unittest {
+    import std.range : iota;
+
+    EnumSet!(Element, int) set;
+
+    with (Element) {
+      set = iota(0, 4);
+
+      assert(set[air]   == 0);
+      assert(set[earth] == 1);
+      assert(set[water] == 2);
+      assert(set[fire]  == 3);
     }
   }
 
