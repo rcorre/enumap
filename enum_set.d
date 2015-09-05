@@ -1,3 +1,63 @@
+/**
+ * An `EnumSet` maps each member of an enum to a single value.
+ *
+ * An `EnumSet` is effectively a lightweight associative array with some benefits.
+ *
+ * You can think of an `EnumSet!(MyEnum, int)` somewhat like a `int[MyEnum]`,
+ * with the following differences:
+ *
+ * - `EnumSet!(K,V)` is a value type and require no dynamic memory allocation
+ * - `EnumSet!(K,V)` has a pre-initialized entry for every member of `K`
+ * - `EnumSet!(K,V)` supports the syntax `set.k` as an alias to `set[K.k]`
+ * - `EnumSet!(K,V)` supports array-wise operations
+ *
+ * Examples:
+ * Suppose you are building a good ol' dungeon-crawling RPG.
+ * Where to start? How about the classic 6 attributes:
+ *
+ * ---
+ * enum Attribute {
+ *  strength, dexterity, constitution, wisdom, intellect, charisma
+ * };
+ *
+ * struct Character {
+ *  EnumSet!(Attribute, int) attributes;
+ * }
+ * ---
+ *
+ * Lets roll some stats!
+ *
+ * ---
+ * Character hero;
+ * hero.attributes = sequence!((a,n) => uniform!"[]"(0, 20))().take(6);
+ * ---
+ *
+ * Note that we can assign directly from a range!
+ * This is roughly equivalent to `int[6] = range.array`, without the allocation.
+ * Just like the array assignment, it will fail if the length doesn't match.
+ *
+ *
+ * Since there are only a finite number of slots you can place a character's
+ * equipment in, you could model it with an `EnumSet`:
+ *
+ * ---
+ * enum ItemSlot { leftHand, rightHand, torso, head, legs, arms }
+ * struct Character {
+ *  EnumSet!(ItemSlot, Item) equipment;
+ * }
+ * ---
+ *
+ * So, what do these items do? Well, armor should probably protect you from
+ * damage of various kinds:
+ *
+ * ---
+ * enum DamageType { slash, crush, pierce, air, earth, water, fire };
+ * struct Character {
+ *  EnumSet!(ItemSlot, Item) equipment;
+ * }
+ * ---
+ *
+ */
 module enum_set;
 
 import std.conv   : to;
