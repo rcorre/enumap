@@ -154,10 +154,13 @@ struct EnumSet(K, V) {
   /// Get a slice of all the values.
   auto opSlice() { return _store[]; }
 
-  ///
+  /// Slice an `EnumSet` to work with it as a range
   unittest {
-    EnumSet!(Element, int) elements = [1, 2, 3, 4];
-    assert(elements[] == [1, 2, 3, 4]);
+    import std.algorithm : map;
+
+    EnumSet!(Element, int) e1 = [1, 2, 3, 4];
+    EnumSet!(Element, int) e2 = e1[].map!(x => x + 2);
+    assert(e2[] == [3, 4, 5, 6]);
   }
 
   /// Apply an array-wise operation between two `EnumSet`s.
