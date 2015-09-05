@@ -1,0 +1,8 @@
+{
+	"name": "enumset",
+	"description": "A lightweight structure that maps enum member to values",
+	"copyright": "Copyright © 2015, rcorre",
+	"authors": ["rcorre"],
+	"dependencies": {
+	}
+}
