@@ -117,47 +117,31 @@ struct EnumSet(K, V) {
     }
   }
 
-  /// Get the value at the index specified by an enum member.
-  auto opIndex(K key) {
+  /**
+   * Access the value at the index specified by an enum member.
+   *
+   * Indexing returns a reference, so it can be used as a getter or setter.
+   */
+  ref auto opIndex(K key) {
     return _store[key];
   }
 
   ///
   unittest {
-    auto elements = EnumSet!(Element, int)([Element.fire: 4]);
+    EnumSet!(Element, int) elements;
+    elements[Element.fire] = 4;
     assert(elements[Element.fire] == 4);
   }
 
-  /// Set the value at the index specified by an enum member.
-  auto opIndexAssign(V value, K key) {
-    return _store[key] = value;
-  }
-
-  ///
-  unittest {
-    EnumSet!(Element, int) elements;
-
-    elements[Element.earth] = 5;
-    assert(elements[Element.earth] == 5);
-  }
-
-  /// Get the value at the index specified by the name of an enum member.
-  auto opDispatch(string s)() {
+  /**
+   * Access the value at the index specified by the name of an enum member.
+   *
+   * The value is returned by reference, so it can used for assignment.
+   * `set.name` is just syntactic sugar for `set[SomeEnum.name]`.
+   */
+  ref auto opDispatch(string s)() {
     enum key = s.to!K;
     return this[key];
-  }
-
-  ///
-  unittest {
-    EnumSet!(Element, int) elements;
-    elements.water = 5;
-    assert(elements.water == 5);
-  }
-
-  /// Set the value at the index specified by the name of an enum member.
-  auto opDispatch(string s)(V val) {
-    enum key = s.to!K;
-    return this[key] = val;
   }
 
   ///
