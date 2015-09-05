@@ -85,7 +85,9 @@ import std.typecons : staticIota;
  *     The enum values must start at 0, and increase by 1 for each entry.
  * V = The type of value stored for each enum member
  */
-struct EnumSet(K, V) {
+struct EnumSet(K, V)
+  if(EnumMembers!K == staticIota!(0, EnumMembers!K.length))
+{
   enum length = EnumMembers!K.length;
 
   /// Assuming Element consists of air, earth, water, and fire:
