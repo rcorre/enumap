@@ -30,7 +30,11 @@ struct EnumSet(K, V) {
     assert(set[Element.fire]  == 4);
   }
 
-  /// Construct an EnumSet from an associative array.
+  /**
+   * Construct an EnumSet from an associative array.
+   *
+   * Any values not specified in `dict` default to `V.init`.
+   */
   this(V[K] dict) {
     foreach(pair ; dict.byKeyValue) this[pair.key] = pair.value;
   }
