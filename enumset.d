@@ -58,7 +58,7 @@
  * ---
  *
  */
-module enum_set;
+module enumset;
 
 import std.conv   : to;
 import std.range  : enumerate, walkLength, isInputRange, ElementType;
