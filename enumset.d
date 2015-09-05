@@ -33,38 +33,58 @@
  * ---
  *
  * Note that we can assign directly from a range!
- * This is roughly equivalent to `int[6] = range.array`, without the allocation.
  * Just like the array assignment, it will fail if the length doesn't match.
  *
- *
- * Since there are only a finite number of slots you can place a character's
- * equipment in, you could model it with an `EnumSet`:
+ * We can access those values using either `opIndex` or `opDispatch`:
  *
  * ---
- * enum ItemSlot { leftHand, rightHand, torso, head, legs, arms }
- * struct Character {
- *  EnumSet!(ItemSlot, Item) equipment;
- * }
+ * if (hero.attributes[Attribute.wisdom] < 5) hero.drink(unidentifiedPotion);
+ * // equivalent
+ * if (hero.attributes.wisdom < 5) hero.drink(unidentifiedPotion);
  * ---
  *
- * So, what do these items do? Well, armor should probably protect you from
- * damage of various kinds:
+ * We can also perform binary operations between `EnumSet`s:
  *
  * ---
- * enum DamageType { slash, crush, pierce, air, earth, water, fire };
- * struct Character {
- *  EnumSet!(ItemSlot, Item) equipment;
- * }
+ * // note the convenient assignment from an associative array:
+ * EnumSet!(Attribute, int) bonus = {Attribute.charisma: 2, Attribute.wisom: 1};
+ *
+ * // level up! adds 2 to charisma and 1 to wisdom.
+ * hero.attributes += bonus;
  * ---
+ *
+ * Finally, note that we can break the `EnumSet` down into a range when needed:
+ *
+ * ---
+ * hero.attributes = hero.attributes[].map!(x => x + 1);
+ * ---
+ *
+ * See the full documentation of `EnumSet` for all the operations it supports.
  *
  */
 module enumset;
 
-import std.conv   : to;
-import std.range  : enumerate, walkLength, isInputRange, ElementType;
-import std.format : format;
-import std.traits : EnumMembers;
+import std.conv     : to;
+import std.range    : enumerate, walkLength, isInputRange, ElementType;
+import std.format   : format;
+import std.traits   : EnumMembers;
+import std.typecons : staticIota;
 
+/**
+ * A structure that maps each member of an enum to a single value.
+ *
+ * An `EnumSet` is a lightweight alternative to an associative array that is
+ * useable when your key type is an enum.
+ *
+ * It provides some added benefits over the AA, such as array-wise operations,
+ * default values for all keys, and some nice `opDispatch` based syntactic
+ * sugar for element access.
+ *
+ * Params:
+ * K = The type of enum used as a key.
+ *     The enum values must start at 0, and increase by 1 for each entry.
+ * V = The type of value stored for each enum member
+ */
 struct EnumSet(K, V) {
   enum length = EnumMembers!K.length;
 
