@@ -6,10 +6,16 @@
  * You can think of an `EnumSet!(MyEnum, int)` somewhat like a `int[MyEnum]`,
  * with the following differences:
  *
- * - `EnumSet!(K,V)` is a value type and require no dynamic memory allocation
+ * - `EnumSet!(K,V)` is a value type and requires no dynamic memory allocation
+ *
  * - `EnumSet!(K,V)` has a pre-initialized entry for every member of `K`
- * - `EnumSet!(K,V)` supports the syntax `set.k` as an alias to `set[K.k]`
+ *
+ * - `EnumSet!(K,V)` supports the syntax `set.name` as an alias to `set[K.name]`
+ *
  * - `EnumSet!(K,V)` supports array-wise operations
+ *
+ * Authors: Ryan Roden-Corrent ($(LINK2 https://github.com/rcorre, rcorre))
+ * License: MIT
  *
  * Examples:
  * Suppose you are building a good ol' dungeon-crawling RPG.
