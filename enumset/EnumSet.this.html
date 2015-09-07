@@ -120,6 +120,17 @@ template this(R);</pre>
 							</tr>
 						</table>
 					</section>
+<section><h3>Example</h3>
+
+<pre class="code prettyprint lang-d">import std.range : repeat;
+<a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) elements = 9.repeat(4);
+assert(elements.air   == 9);
+assert(elements.earth == 9);
+assert(elements.water == 9);
+assert(elements.fire  == 9);
+
+</pre>
+</section>
 
 			</section>
 			<section>
@@ -130,7 +141,7 @@ template this(R);</pre>
 			</section>
 			<section>
 				<h2>Copyright</h2>
-<p>Copyright © 2015, Ryan Roden-Corrent
+<p>© 2015, Ryan Roden-Corrent
 </p>
 
 
