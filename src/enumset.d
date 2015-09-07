@@ -16,6 +16,7 @@
  *
  * Authors: Ryan Roden-Corrent ($(LINK2 https://github.com/rcorre, rcorre))
  * License: MIT
+ * Copyright: © 2015, Ryan Roden-Corrent
  *
  * Examples:
  * Suppose you are building a good ol' dungeon-crawling RPG.
