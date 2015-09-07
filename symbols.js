@@ -5,6 +5,7 @@ var symbols = [
 {name: 'enumset.EnumSet.byKey', kind: "functiondeclaration", path: './enumset/EnumSet.byKey.html', attributes: ["auto"]},
 {name: 'enumset.EnumSet.byKeyValue', kind: "functiondeclaration", path: './enumset/EnumSet.byKeyValue.html', attributes: ["auto"]},
 {name: 'enumset.EnumSet.byValue', kind: "functiondeclaration", path: './enumset/EnumSet.byValue.html', attributes: ["auto"]},
+{name: 'enumset.EnumSet.length', kind: "enummemberdeclaration", path: './enumset/EnumSet.length.html', attributes: []},
 {name: 'enumset.EnumSet.opAssign', kind: "templatedeclaration", path: './enumset/EnumSet.opAssign.html', attributes: []},
 {name: 'enumset.EnumSet.opAssign.opAssign', kind: "functiondeclaration", path: './enumset/EnumSet.opAssign.opAssign.html', attributes: []},
 {name: 'enumset.EnumSet.opBinary', kind: "templatedeclaration", path: './enumset/EnumSet.opBinary.html', attributes: []},

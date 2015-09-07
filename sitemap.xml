@@ -6,6 +6,7 @@
 <url><loc>http://127.0.0.1/enumset/EnumSet.byKey.html</loc></url>
 <url><loc>http://127.0.0.1/enumset/EnumSet.byKeyValue.html</loc></url>
 <url><loc>http://127.0.0.1/enumset/EnumSet.byValue.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.length.html</loc></url>
 <url><loc>http://127.0.0.1/enumset/EnumSet.opAssign.html</loc></url>
 <url><loc>http://127.0.0.1/enumset/EnumSet.opAssign.opAssign.html</loc></url>
 <url><loc>http://127.0.0.1/enumset/EnumSet.opBinary.html</loc></url>
