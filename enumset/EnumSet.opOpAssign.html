@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Template EnumSet.opOpAssign</title>
+		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
+		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
+		<script type="text/javascript" src="../prettify/prettify.js">/**/</script>
+		<script type="text/javascript" src="../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="prettyPrint(); setupDdox();">
+		<nav id="main-nav">
+						<ul class="tree-view">
+							<li>
+								<a href="../enumset.html" class="selected module">enumset</a>
+							</li>
+						</ul>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<p>
+						<input id="symbolSearch" type="text" placeholder="Search for symbols" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+					</p>
+	<ul id="symbolSearchResults" style="display: none"></ul>
+	<script type="application/javascript" src="../symbols.js"></script>
+	<script type="application/javascript">
+var symbolSearchRootDir = "../";
+$('#symbolSearchPane').show();
+	</script>
+				</div>
+		</nav>
+		<div id="main-contents">
+			<h1>Template EnumSet.opOpAssign</h1>
+			<section>
+				<p>Perform an in-place operation.
+</p>
+
+					<section>
+						<h2>Arguments</h2>
+						<pre class="code prettyprint lang-d prototype">
+template opOpAssign(string op);</pre>
+					</section>
+					<section>
+						<h3>Functions</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Function name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.opOpAssign.opOpAssign.html">opOpAssign</a>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+<section><h3>Example</h3>
+
+<pre class="code prettyprint lang-d"><a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) base  = [Element.water : 4, Element.air : 3];
+<a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) bonus = [Element.water : 5, Element.fire : 2];
+
+base += bonus;
+
+assert(base.water == 4 + 5);
+assert(base.air   == 3 + 0);
+assert(base.fire  == 0 + 2);
+assert(base.earth == 0 + 0);
+
+base -= bonus; // cancel out the previous addition
+
+assert(base.water == 4);
+assert(base.air   == 3);
+assert(base.fire  == 0);
+assert(base.earth == 0);
+
+base *= bonus;
+assert(base.water == 4 * 5);
+assert(base.air   == 3 * 0);
+assert(base.fire  == 0 * 2);
+assert(base.earth == 0 * 0);
+
+</pre>
+</section>
+
+			</section>
+			<section>
+				<h2>Authors</h2>
+<p>Ryan Roden-Corrent (<a href="https://github.com/rcorre">rcorre</a>)
+</p>
+
+			</section>
+			<section>
+				<h2>Copyright</h2>
+<p>Copyright © 2015, Ryan Roden-Corrent
+</p>
+
+
+			</section>
+			<section>
+				<h2>License</h2>
+<p>MIT
+</p>
+
+			</section>
+		</div>
+	</body>
+</html>

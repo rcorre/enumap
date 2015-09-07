@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>http://127.0.0.1/index.html</loc></url>
+<url><loc>http://127.0.0.1/enumset.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.byKey.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.byKeyValue.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.byValue.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opAssign.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opAssign.opAssign.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opBinary.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opBinary.opBinary.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opDispatch.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opDispatch.opDispatch.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opIndex.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opOpAssign.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opOpAssign.opOpAssign.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opSlice.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opUnary.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.opUnary.opUnary.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.this.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.this.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.this.html</loc></url>
+<url><loc>http://127.0.0.1/enumset/EnumSet.this.this.html</loc></url>
+</urlset>

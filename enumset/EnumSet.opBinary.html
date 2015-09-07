@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Template EnumSet.opBinary</title>
+		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
+		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
+		<script type="text/javascript" src="../prettify/prettify.js">/**/</script>
+		<script type="text/javascript" src="../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="prettyPrint(); setupDdox();">
+		<nav id="main-nav">
+						<ul class="tree-view">
+							<li>
+								<a href="../enumset.html" class="selected module">enumset</a>
+							</li>
+						</ul>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<p>
+						<input id="symbolSearch" type="text" placeholder="Search for symbols" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+					</p>
+	<ul id="symbolSearchResults" style="display: none"></ul>
+	<script type="application/javascript" src="../symbols.js"></script>
+	<script type="application/javascript">
+var symbolSearchRootDir = "../";
+$('#symbolSearchPane').show();
+	</script>
+				</div>
+		</nav>
+		<div id="main-contents">
+			<h1>Template EnumSet.opBinary</h1>
+			<section>
+				<p>Apply an array-wise operation between two <code class="prettyprint lang-d"><a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code>s.
+</p>
+
+					<section>
+						<h2>Arguments</h2>
+						<pre class="code prettyprint lang-d prototype">
+template opBinary(string op);</pre>
+					</section>
+					<section>
+						<h3>Functions</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Function name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.opBinary.opBinary.html">opBinary</a>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+<section><h3>Example</h3>
+
+<pre class="code prettyprint lang-d"><a href="../enumset/EnumSet.html">EnumSet</a>!(ItemType, string[]) inventory = [
+  ItemType.junk   : [ "Gemstone"        ],
+  ItemType.normal : [ "Sword", "Shield" ],
+  ItemType.key    : [ "Bronze Key"      ]
+];
+
+<a href="../enumset/EnumSet.html">EnumSet</a>!(ItemType, string[]) loot = [
+  ItemType.junk   : [ "Potato"       ],
+  ItemType.normal : [ "Potion"       ],
+  ItemType.key    : [ "Skeleton Key" ]
+];
+
+inventory ~= loot;
+
+assert(inventory.junk   == [ "Gemstone", "Potato"          ]);
+assert(inventory.normal == [ "Sword", "Shield" , "Potion"  ]);
+assert(inventory.key    == [ "Bronze Key" , "Skeleton Key" ]);
+
+</pre>
+</section>
+<section><h3>Example</h3>
+
+<pre class="code prettyprint lang-d"><a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) base  = [Element.water : 4, Element.air : 3];
+<a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) bonus = [Element.water : 5, Element.fire : 2];
+
+auto sum = base + bonus;
+auto diff = base - bonus;
+auto prod = base * bonus;
+
+assert(sum.water == 4 + 5);
+assert(sum.air   == 3 + 0);
+assert(sum.fire  == 0 + 2);
+assert(sum.earth == 0 + 0);
+
+assert(diff.water == 4 - 5);
+assert(diff.air   == 3 - 0);
+assert(diff.fire  == 0 - 2);
+assert(diff.earth == 0 - 0);
+
+assert(prod.water == 4 * 5);
+assert(prod.air   == 3 * 0);
+assert(prod.fire  == 0 * 2);
+assert(prod.earth == 0 * 0);
+
+</pre>
+</section>
+
+			</section>
+			<section>
+				<h2>Authors</h2>
+<p>Ryan Roden-Corrent (<a href="https://github.com/rcorre">rcorre</a>)
+</p>
+
+			</section>
+			<section>
+				<h2>Copyright</h2>
+<p>Copyright © 2015, Ryan Roden-Corrent
+</p>
+
+
+			</section>
+			<section>
+				<h2>License</h2>
+<p>MIT
+</p>
+
+			</section>
+		</div>
+	</body>
+</html>

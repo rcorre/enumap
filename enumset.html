@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Module enumset</title>
+		<link rel="stylesheet" type="text/css" href="./styles/ddox.css"/>
+		<link rel="stylesheet" href="./prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="./scripts/jquery.js">/**/</script>
+		<script type="text/javascript" src="./prettify/prettify.js">/**/</script>
+		<script type="text/javascript" src="./scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="prettyPrint(); setupDdox();">
+		<nav id="main-nav">
+						<ul class="tree-view">
+							<li>
+								<a href="./enumset.html" class="selected module">enumset</a>
+							</li>
+						</ul>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<p>
+						<input id="symbolSearch" type="text" placeholder="Search for symbols" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+					</p>
+	<ul id="symbolSearchResults" style="display: none"></ul>
+	<script type="application/javascript" src="./symbols.js"></script>
+	<script type="application/javascript">
+var symbolSearchRootDir = "./";
+$('#symbolSearchPane').show();
+	</script>
+				</div>
+		</nav>
+		<div id="main-contents">
+			<h1>Module enumset</h1>
+			<p> An <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code> maps each member of an enum to a single value.
+</p>
+<section>
+<p> An <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code> is effectively a lightweight associative array with some benefits.
+</p>
+
+<p> You can think of an <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(MyEnum, int)</code> somewhat like a <code class="prettyprint lang-d">int[MyEnum]</code>,
+ with the following differences:
+</p>
+
+<p> - <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(K,V)</code> is a value type and requires no dynamic memory allocation
+</p>
+
+<p> - <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(K,V)</code> has a pre-initialized entry for every member of <code class="prettyprint lang-d">K</code>
+</p>
+
+<p> - <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(K,V)</code> supports the syntax <code class="prettyprint lang-d">set.name</code> as an alias to <code class="prettyprint lang-d">set[K.name]</code>
+</p>
+
+<p> - <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(K,V)</code> supports array-wise operations
+</p>
+
+</section>
+
+			<section><section><h2>Examples</h2>
+<p> Suppose you are building a good ol' dungeon-crawling RPG.
+ Where to start? How about the classic 6 attributes:
+</p>
+
+<pre class="code prettyprint lang-d">enum Attribute {
+ strength, dexterity, constitution, wisdom, intellect, charisma
+};
+
+struct Character {
+ <a href="./enumset/EnumSet.html">EnumSet</a>!(Attribute, int) attributes;
+}
+</pre>
+
+<p> Lets roll some stats!
+</p>
+
+<pre class="code prettyprint lang-d">Character hero;
+hero.attributes = sequence!((a,n) => uniform!"[]"(0, 20))().take(6);
+</pre>
+
+<p> Note that we can assign directly from a range!
+ Just like the array assignment, it will fail if the length doesn't match.
+</p>
+
+<p> We can access those values using either <code class="prettyprint lang-d">opIndex</code> or <code class="prettyprint lang-d">opDispatch</code>:
+</p>
+
+<pre class="code prettyprint lang-d">if (hero.attributes[Attribute.wisdom] < 5) hero.drink(unidentifiedPotion);
+// equivalent
+if (hero.attributes.wisdom < 5) hero.drink(unidentifiedPotion);
+</pre>
+
+<p> We can also perform binary operations between <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code>s:
+</p>
+
+<pre class="code prettyprint lang-d">// note the convenient assignment from an associative array:
+<a href="./enumset/EnumSet.html">EnumSet</a>!(Attribute, int) bonus = {Attribute.charisma: 2, Attribute.wisom: 1};
+
+// level up! adds 2 to charisma and 1 to wisdom.
+hero.attributes += bonus;
+</pre>
+
+<p> Finally, note that we can break the <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code> down into a range when needed:
+</p>
+
+<pre class="code prettyprint lang-d">hero.attributes = hero.attributes.byValue.map!(x => x + 1);
+</pre>
+
+<p> See the full documentation of <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code> for all the operations it supports.
+</p>
+
+</section>
+</section>
+			<section>
+				<h2>Structs</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a id="EnumSet" class="public" href="./enumset/EnumSet.html">
+								<code>EnumSet</code>
+							</a>
+						</td>
+						<td> A structure that maps each member of an enum to a single value.
+</td>
+					</tr>
+				</table>
+			</section>
+			<section>
+				<h2>Authors</h2>
+<p>Ryan Roden-Corrent (<a href="https://github.com/rcorre">rcorre</a>)
+</p>
+
+			</section>
+			<section>
+				<h2>Copyright</h2>
+<p>Copyright © 2015, Ryan Roden-Corrent
+</p>
+
+
+			</section>
+			<section>
+				<h2>License</h2>
+<p>MIT
+</p>
+
+			</section>
+		</div>
+	</body>
+</html>

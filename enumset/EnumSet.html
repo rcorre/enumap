@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Struct EnumSet</title>
+		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
+		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
+		<script type="text/javascript" src="../prettify/prettify.js">/**/</script>
+		<script type="text/javascript" src="../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="prettyPrint(); setupDdox();">
+		<nav id="main-nav">
+						<ul class="tree-view">
+							<li>
+								<a href="../enumset.html" class="selected module">enumset</a>
+							</li>
+						</ul>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<p>
+						<input id="symbolSearch" type="text" placeholder="Search for symbols" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+					</p>
+	<ul id="symbolSearchResults" style="display: none"></ul>
+	<script type="application/javascript" src="../symbols.js"></script>
+	<script type="application/javascript">
+var symbolSearchRootDir = "../";
+$('#symbolSearchPane').show();
+	</script>
+				</div>
+		</nav>
+		<div id="main-contents">
+			<h1>Struct EnumSet</h1>
+			<section>
+				<p> A structure that maps each member of an enum to a single value.
+</p>
+<section>
+<p> An <code class="prettyprint lang-d"><code class="prettyprint lang-d">EnumSet</code></code> is a lightweight alternative to an associative array that is
+ useable when your key type is an enum.
+</p>
+
+<p> It provides some added benefits over the AA, such as array-wise operations,
+ default values for all keys, and some nice <code class="prettyprint lang-d"><a href="../enumset/EnumSet.opDispatch.html"><code class="prettyprint lang-d">opDispatch</code></a></code> based syntactic
+ sugar for element access.
+</p>
+
+</section>
+
+					<section>
+						<h3>Constructors</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.this.html" class="public">
+										<code>this</code>
+									</a>
+								</td>
+								<td>Construct an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from a static array.
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.this.html" class="public">
+										<code>this</code>
+									</a>
+								</td>
+								<td> Construct an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from an associative array.
+</td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>Methods</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.byKey.html" class="public">
+										<code>byKey</code>
+									</a>
+								</td>
+								<td>Get a range iterating over the members of the enum <code class="prettyprint lang-d">K</code>.
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.byKeyValue.html" class="public">
+										<code>byKeyValue</code>
+									</a>
+								</td>
+								<td>Return a range of (EnumMember, value) pairs.
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.byValue.html" class="public">
+										<code>byValue</code>
+									</a>
+								</td>
+								<td>Get a range iterating over the stored values.
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.opIndex.html" class="public">
+										<code>opIndex</code>
+									</a>
+								</td>
+								<td> Access the value at the index specified by an enum member.
+</td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>Aliases</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.opSlice.html" class="public">
+										<code>opSlice</code>
+									</a>
+								</td>
+								<td>Return a range of (EnumMember, value) pairs.
+</td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>Templates</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.opAssign.html" class="public">
+										<code>opAssign</code>
+									</a>
+								</td>
+								<td>An <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> can be assigned from any type if can be constructed from.
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.opBinary.html" class="public">
+										<code>opBinary</code>
+									</a>
+								</td>
+								<td>Apply an array-wise operation between two <code class="prettyprint lang-d"><a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code>s.
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.opDispatch.html" class="public">
+										<code>opDispatch</code>
+									</a>
+								</td>
+								<td> Access the value at the index specified by the name of an enum member.
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.opOpAssign.html" class="public">
+										<code>opOpAssign</code>
+									</a>
+								</td>
+								<td>Perform an in-place operation.
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.opUnary.html" class="public">
+										<code>opUnary</code>
+									</a>
+								</td>
+								<td>Perform a unary operation on each entry.
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.this.html" class="public">
+										<code>this</code>
+									</a>
+								</td>
+								<td>Assign from a range with a number of elements exactly matching <code class="prettyprint lang-d">length</code>.
+</td>
+							</tr>
+						</table>
+					</section>
+<section><h3>Parameters</h3>
+<table><col class="caption"><tr><th>Name</th><th>Description</th></tr>
+<tr><td id="K">K</td><td> The type of enum used as a key.
+     The enum values must start at 0, and increase by 1 for each entry.</td></tr>
+<tr><td id="V">V</td><td> The type of value stored for each enum member</td></tr>
+</table>
+</section>
+
+			</section>
+			<section>
+				<h2>Authors</h2>
+<p>Ryan Roden-Corrent (<a href="https://github.com/rcorre">rcorre</a>)
+</p>
+
+			</section>
+			<section>
+				<h2>Copyright</h2>
+<p>Copyright © 2015, Ryan Roden-Corrent
+</p>
+
+
+			</section>
+			<section>
+				<h2>License</h2>
+<p>MIT
+</p>
+
+			</section>
+		</div>
+	</body>
+</html>

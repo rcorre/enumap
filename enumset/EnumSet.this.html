@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>EnumSet.this - multiple declarations</title>
+		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
+		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
+		<script type="text/javascript" src="../prettify/prettify.js">/**/</script>
+		<script type="text/javascript" src="../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="prettyPrint(); setupDdox();">
+		<nav id="main-nav">
+						<ul class="tree-view">
+							<li>
+								<a href="../enumset.html" class="selected module">enumset</a>
+							</li>
+						</ul>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<p>
+						<input id="symbolSearch" type="text" placeholder="Search for symbols" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+					</p>
+	<ul id="symbolSearchResults" style="display: none"></ul>
+	<script type="application/javascript" src="../symbols.js"></script>
+	<script type="application/javascript">
+var symbolSearchRootDir = "../";
+$('#symbolSearchPane').show();
+	</script>
+				</div>
+		</nav>
+		<div id="main-contents">
+			<h1>EnumSet.this - multiple declarations</h1>
+			<ul>
+				<li>Function EnumSet.this</li>
+				<li>Function EnumSet.this</li>
+				<li>Template EnumSet.this</li>
+			</ul>
+			<section>
+				<h2>Function EnumSet.this</h2>
+				<p>Construct an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from a static array.
+</p>
+
+					<section>
+						<h3>Prototype</h3>
+						<pre class="code prettyprint lang-d prototype">
+this(
+&nbsp;&nbsp;V[length] values
+);</pre>
+					</section>
+<section><h3>Example</h3>
+
+<pre class="code prettyprint lang-d">auto set = <a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int)([1, 2, 3, 4]);
+
+assert(set[Element.air]   == 1);
+assert(set[Element.earth] == 2);
+assert(set[Element.water] == 3);
+assert(set[Element.fire]  == 4);
+
+</pre>
+</section>
+
+			</section>
+			<section>
+				<h2>Function EnumSet.this</h2>
+				<p> Construct an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from an associative array.
+</p>
+<section>
+<p> Any values not specified in <code class="prettyprint lang-d"><a href="../enumset/EnumSet.this.html#dict"><code class="prettyprint lang-d">dict</code></a></code> default to <code class="prettyprint lang-d">V.init</code>.
+</p>
+</section>
+
+					<section>
+						<h3>Prototype</h3>
+						<pre class="code prettyprint lang-d prototype">
+this(
+&nbsp;&nbsp;V[K] dict
+);</pre>
+					</section>
+<section><h3>Example</h3>
+
+<pre class="code prettyprint lang-d">with (Element) {
+  <a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) set = [ air: 1, earth: 2, water: 3 ];
+
+  assert(set[air]   == 1);
+  assert(set[earth] == 2);
+  assert(set[water] == 3);
+  assert(set[fire]  == 0); // unspecified values default to V.init
+}
+
+</pre>
+</section>
+
+			</section>
+			<section>
+				<h2>Template EnumSet.this</h2>
+				<p>Assign from a range with a number of elements exactly matching <code class="prettyprint lang-d">length</code>.
+</p>
+
+					<section>
+						<h2>Arguments</h2>
+						<pre class="code prettyprint lang-d prototype">
+template this(R);</pre>
+					</section>
+					<section>
+						<h3>Functions</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Function name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumset/EnumSet.this.this.html">this</a>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+
+			</section>
+			<section>
+				<h2>Authors</h2>
+<p>Ryan Roden-Corrent (<a href="https://github.com/rcorre">rcorre</a>)
+</p>
+
+			</section>
+			<section>
+				<h2>Copyright</h2>
+<p>Copyright © 2015, Ryan Roden-Corrent
+</p>
+
+
+			</section>
+			<section>
+				<h2>License</h2>
+<p>MIT
+</p>
+
+			</section>
+		</div>
+	</body>
+</html>
