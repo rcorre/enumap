@@ -71,7 +71,7 @@
 module enumset;
 
 import std.conv     : to;
-import std.range    : enumerate, walkLength, isInputRange, ElementType;
+import std.range;
 import std.format   : format;
 import std.traits   : EnumMembers;
 import std.typecons : staticIota;
@@ -355,6 +355,48 @@ struct EnumSet(K, V)
 
     assert(-elements.water == -4);
     assert(-elements.air   == -3);
+  }
+
+  /// Get a range iterating over the members of the enum `K`.
+  auto byKey() { return only(EnumMembers!K); }
+
+  unittest {
+    import std.algorithm : equal;
+
+    EnumSet!(Element, int) e;
+    with (Element) {
+      assert(e.byKey.equal([ air, earth, water, fire ]));
+    }
+  }
+
+  /// Get a range iterating over the stored values.
+  auto byValue() { return _store[]; }
+
+  unittest {
+    import std.algorithm : map;
+
+    EnumSet!(Element, int) e1 = [1, 2, 3, 4];
+    EnumSet!(Element, int) e2 = e1[].map!(x => x + 2);
+    assert(e2[] == [3, 4, 5, 6]);
+  }
+
+  /// Return a range of (EnumMember, value) pairs.
+  auto byKeyValue() {
+    return zip(only(EnumMembers!K), _store[]);
+  }
+
+  ///
+  unittest {
+    import std.format;
+
+    EnumSet!(Element, int) elements = [Element.water : 4, Element.air : 3];
+    string[] result;
+
+    foreach(name, value ; elements.byKeyValue) {
+      result ~= "%s : %s".format(name, value);
+    }
+
+    assert(result == ["air : 3", "earth : 0", "water : 4", "fire : 0"]);
   }
 }
 
