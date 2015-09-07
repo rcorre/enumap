@@ -95,6 +95,7 @@ import std.typecons : staticIota;
 struct EnumSet(K, V)
   if(EnumMembers!K == staticIota!(0, EnumMembers!K.length))
 {
+  /// The number of entries in the `EnumSet`
   enum length = EnumMembers!K.length;
 
   /// Assuming Element consists of air, earth, water, and fire:
