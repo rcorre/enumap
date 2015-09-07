@@ -63,7 +63,7 @@
  * Finally, note that we can break the `EnumSet` down into a range when needed:
  *
  * ---
- * hero.attributes = hero.attributes[].map!(x => x + 1);
+ * hero.attributes = hero.attributes.byValue.map!(x => x + 1);
  * ---
  *
  * See the full documentation of `EnumSet` for all the operations it supports.
