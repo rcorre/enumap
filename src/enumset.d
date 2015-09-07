@@ -149,6 +149,7 @@ struct EnumSet(K, V)
     foreach (i, val ; values.enumerate) _store[i] = val;
   }
 
+  ///
   unittest {
     import std.range : repeat;
     EnumSet!(Element, int) elements = 9.repeat(4);
