@@ -239,16 +239,21 @@ struct EnumSet(K, V)
     assert(elements.water == 5);
   }
 
-  /// Get a slice of all the values.
-  auto opSlice() { return _store[]; }
+  /// Return a range of (EnumMember, value) pairs.
+  alias opSlice = byKeyValue;
 
-  /// Slice an `EnumSet` to work with it as a range
+  /// foreach iterates over (EnumMember, value) pairs.
   unittest {
-    import std.algorithm : map;
+    import std.format;
 
-    EnumSet!(Element, int) e1 = [1, 2, 3, 4];
-    EnumSet!(Element, int) e2 = e1[].map!(x => x + 2);
-    assert(e2[] == [3, 4, 5, 6]);
+    EnumSet!(Element, int) elements = [Element.water : 4, Element.air : 3];
+    string[] result;
+
+    foreach(element, value ; elements) {
+      result ~= "%s : %s".format(element, value);
+    }
+
+    assert(result == ["air : 3", "earth : 0", "water : 4", "fire : 0"]);
   }
 
   /// Apply an array-wise operation between two `EnumSet`s.
@@ -376,8 +381,8 @@ struct EnumSet(K, V)
     import std.algorithm : map;
 
     EnumSet!(Element, int) e1 = [1, 2, 3, 4];
-    EnumSet!(Element, int) e2 = e1[].map!(x => x + 2);
-    assert(e2[] == [3, 4, 5, 6]);
+    EnumSet!(Element, int) e2 = e1.byValue.map!(x => x + 2);
+    assert(e2.byValue == [3, 4, 5, 6]);
   }
 
   /// Return a range of (EnumMember, value) pairs.
