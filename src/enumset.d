@@ -255,8 +255,33 @@ struct EnumSet(K, V)
   auto opBinary(string op)(typeof(this) other)
     if (is(typeof(mixin("V.init"~op~"V.init")) : V))
   {
-    V[length] result = mixin("_store[]"~op~"other._store[]");
-    return typeof(this)(result);
+    typeof(this) result;
+    foreach(member ; EnumMembers!K) {
+      result[member] = mixin("this[member]"~op~"other[member]");
+    }
+
+    return result;
+  }
+
+  ///
+  unittest {
+    EnumSet!(ItemType, string[]) inventory = [
+      ItemType.junk   : [ "Gemstone"        ],
+      ItemType.normal : [ "Sword", "Shield" ],
+      ItemType.key    : [ "Bronze Key"      ]
+    ];
+
+    EnumSet!(ItemType, string[]) loot = [
+      ItemType.junk   : [ "Potato"       ],
+      ItemType.normal : [ "Potion"       ],
+      ItemType.key    : [ "Skeleton Key" ]
+    ];
+
+    inventory ~= loot;
+
+    assert(inventory.junk   == [ "Gemstone", "Potato"          ]);
+    assert(inventory.normal == [ "Sword", "Shield" , "Potion"  ]);
+    assert(inventory.key    == [ "Bronze Key" , "Skeleton Key" ]);
   }
 
   ///
@@ -335,5 +360,6 @@ struct EnumSet(K, V)
 
 version (unittest) {
   private enum Element { air, earth, water, fire };
+  private enum ItemType { junk, normal, key };
   private EnumSet!(Element, int) triggerTest;
 }
