@@ -25,7 +25,7 @@ hero.attributes = sequence!((a,n) => uniform!"[]"(0, 20))().take(6);
 ```
 
 Note that we can assign directly from a range!
-Just like the array assignment, it will fail if the length doesn't match.
+Just like static array assignment, it will fail if the length doesn't match.
 
 We can access those values using either `opIndex` or `opDispatch`:
 
