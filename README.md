@@ -1,4 +1,4 @@
-EnumSet (D)
+EnumSet
 ===
 
 An `EnumSet` is a wrapper around a static array that uses enum members as indices.
@@ -52,5 +52,4 @@ Finally, note that we can break the `EnumSet` down into a range when needed:
 hero.attributes = hero.attributes.byValue.map!(x => x + 1);
 ```
 
-Check the [docs](http://rcorre.github.io/dtiled/index.html) for the full feature
-set.
+Check the [docs](http://rcorre.github.io/enumset) for the full feature set.
