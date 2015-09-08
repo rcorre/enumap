@@ -1,13 +1,11 @@
-EnumSet: D language implementation of an enum set data structure.
+EnumSet (D)
 ===
 
-An `EnumSet` provides a lightweight mapping between each member of an enum and a
-value.
+An `EnumSet` is a wrapper around a static array that uses enum members as indices.
+It is essentially a lightweight associative array specialized for using an enum
+as the key type.
 
-An `EnumSet` is just a wrapper around a static array that uses enum members as
-indices.
-
-With no further ado, lets jump in to an example:
+Example time!
 
 ```
 enum Attribute {
@@ -54,5 +52,5 @@ Finally, note that we can break the `EnumSet` down into a range when needed:
 hero.attributes = hero.attributes.byValue.map!(x => x + 1);
 ```
 
-There's a few other things not covered here,
-check the [docs](http://rcorre.github.io/dtiled/index.html) for more details.
+Check the [docs](http://rcorre.github.io/dtiled/index.html) for the full feature
+set.
