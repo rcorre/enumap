@@ -426,5 +426,34 @@ struct EnumSet(K, V)
 version (unittest) {
   private enum Element { air, earth, water, fire };
   private enum ItemType { junk, normal, key };
-  private EnumSet!(Element, int) triggerTest;
+}
+
+// make sure the readme examples work:
+unittest {
+  import std.algorithm, std.range, std.random;
+
+  enum Attribute {
+    strength, dexterity, constitution, wisdom, intellect, charisma
+  }
+
+  EnumSet!(Attribute, int) attributes;
+  assert(attributes.wisdom == 0); // default value check
+
+  attributes[Attribute.strength] = 10;
+
+  attributes = generate!(() => uniform!"[]"(1, 20)).take(6);
+
+  // make sure accessors compile:
+  if (attributes[Attribute.wisdom] < 5) { }
+  if (attributes.wisdom < 5) { }
+
+  // AA constructor
+  EnumSet!(Attribute, int) bonus = [Attribute.charisma: 2, Attribute.wisdom: 1];
+
+  // opBinary
+  attributes += bonus;
+
+  // nogc test
+  void donFancyHat(int[Attribute] aa) { aa[Attribute.charisma] += 1; }
+  @nogc void donFancyHat2(EnumSet!(Attribute, int) set) { set.charisma += 1; }
 }
