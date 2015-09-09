@@ -71,11 +71,11 @@
  */
 module enumset;
 
-import std.conv     : to;
+import std.conv      : to;
 import std.range;
-import std.format   : format;
-import std.traits   : EnumMembers;
-import std.typecons : staticIota;
+import std.traits    : EnumMembers;
+import std.typecons  : tuple, staticIota;
+import std.algorithm : map;
 
 /**
  * A structure that maps each member of an enum to a single value.
@@ -143,11 +143,12 @@ struct EnumSet(K, V)
 
   /// Assign from a range with a number of elements exactly matching `length`.
   this(R)(R values) if (isInputRange!R && is(ElementType!R : V)) {
-    assert(values.walkLength == length,
-        "range contains %d elements, expected exactly %d"
-        .format(values.walkLength, length));
-
-    foreach (i, val ; values.enumerate) _store[i] = val;
+    int i = 0;
+    foreach(val ; values) {
+      assert(i < length, "range contains more values than EnumSet");
+      _store[i++] = val;
+    }
+    assert(i == length, "range contains less values than EnumSet");
   }
 
   ///
@@ -218,7 +219,7 @@ struct EnumSet(K, V)
   }
 
   ///
-  unittest {
+  @nogc unittest {
     EnumSet!(Element, int) elements;
     elements[Element.fire] = 4;
     assert(elements[Element.fire] == 4);
@@ -236,7 +237,7 @@ struct EnumSet(K, V)
   }
 
   ///
-  unittest {
+  @nogc unittest {
     EnumSet!(Element, int) elements;
     elements.water = 5;
     assert(elements.water == 5);
@@ -246,17 +247,18 @@ struct EnumSet(K, V)
   alias opSlice = byKeyValue;
 
   /// foreach iterates over (EnumMember, value) pairs.
-  unittest {
-    import std.format;
+  @nogc unittest {
+    EnumSet!(Element, int) elements;
+    elements.water = 4;
+    elements.air   = 3;
 
-    EnumSet!(Element, int) elements = [Element.water : 4, Element.air : 3];
-    string[] result;
+    foreach(key, value ; elements) {
+      assert(
+          key == Element.water && value == 4 ||
+          key == Element.air   && value == 3 ||
+          value == 0);
 
-    foreach(element, value ; elements) {
-      result ~= "%s : %s".format(element, value);
     }
-
-    assert(result == ["air : 3", "earth : 0", "water : 4", "fire : 0"]);
   }
 
   /// Apply an array-wise operation between two `EnumSet`s.
@@ -293,9 +295,14 @@ struct EnumSet(K, V)
   }
 
   ///
-  unittest {
-    EnumSet!(Element, int) base  = [Element.water : 4, Element.air : 3];
-    EnumSet!(Element, int) bonus = [Element.water : 5, Element.fire : 2];
+  @nogc unittest {
+    EnumSet!(Element, int) base;
+    base.water = 4;
+    base.air   = 3;
+
+    EnumSet!(Element, int) bonus;
+    bonus.water = 5;
+    bonus.fire  = 2;
 
     auto sum = base + bonus;
     auto diff = base - bonus;
@@ -326,8 +333,13 @@ struct EnumSet(K, V)
 
   ///
   unittest {
-    EnumSet!(Element, int) base  = [Element.water : 4, Element.air : 3];
-    EnumSet!(Element, int) bonus = [Element.water : 5, Element.fire : 2];
+    EnumSet!(Element, int) base;
+    base.water = 4;
+    base.air   = 3;
+
+    EnumSet!(Element, int) bonus;
+    bonus.water = 5;
+    bonus.fire  = 2;
 
     base += bonus;
 
@@ -358,53 +370,56 @@ struct EnumSet(K, V)
     return typeof(this)(result);
   }
 
-  unittest {
-    EnumSet!(Element, int) elements  = [Element.water : 4, Element.air : 3];
+  @nogc unittest {
+    EnumSet!(Element, int) elements;
+    elements.water = 4;
 
-    assert(-elements.water == -4);
-    assert(-elements.air   == -3);
+    assert((-elements).water == -4);
   }
 
   /// Get a range iterating over the members of the enum `K`.
   auto byKey() { return only(EnumMembers!K); }
 
-  unittest {
+  @nogc unittest {
+    import std.range     : only;
     import std.algorithm : equal;
 
     EnumSet!(Element, int) e;
     with (Element) {
-      assert(e.byKey.equal([ air, earth, water, fire ]));
+      assert(e.byKey.equal(only(air, earth, water, fire)));
     }
   }
 
   /// Get a range iterating over the stored values.
   auto byValue() { return _store[]; }
 
-  unittest {
-    import std.algorithm : map;
+  @nogc unittest {
+    import std.range     : iota;
+    import std.algorithm : map, equal;
 
-    EnumSet!(Element, int) e1 = [1, 2, 3, 4];
+    EnumSet!(Element, int) e1 = iota(0, 4);
     EnumSet!(Element, int) e2 = e1.byValue.map!(x => x + 2);
-    assert(e2.byValue == [3, 4, 5, 6]);
+    assert(e2.byValue.equal(iota(2, 6)));
   }
 
   /// Return a range of (EnumMember, value) pairs.
   auto byKeyValue() {
-    return zip(only(EnumMembers!K), _store[]);
+    return only(EnumMembers!K).map!(key => tuple(key, this[key]));
   }
 
   ///
-  unittest {
-    import std.format;
+  @nogc unittest {
+    EnumSet!(Element, int) elements;
+    elements.water = 4;
+    elements.air = 3;
 
-    EnumSet!(Element, int) elements = [Element.water : 4, Element.air : 3];
-    string[] result;
+    foreach(key, value ; elements.byKeyValue) {
+      assert(
+          key == Element.water && value == 4 ||
+          key == Element.air   && value == 3 ||
+          value == 0);
 
-    foreach(name, value ; elements.byKeyValue) {
-      result ~= "%s : %s".format(name, value);
     }
-
-    assert(result == ["air : 3", "earth : 0", "water : 4", "fire : 0"]);
   }
 }
 
