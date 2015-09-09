@@ -1,42 +1,51 @@
 EnumSet
 ===
 
-An `EnumSet` is a wrapper around a static array that uses enum members as indices.
-It is essentially a lightweight associative array specialized for using an enum
-as the key type.
-
-Example time!
+An `EnumSet` is a static array that behaves like an associative array
+specialized for using a named enum as a key type:
 
 ```
 enum Attribute {
  strength, dexterity, constitution, wisdom, intellect, charisma
 };
 
-struct Character {
- EnumSet!(Attribute, int) attributes;
-}
+EnumSet!(Attribute, int) attributes;
+
+attributes[Attribute.Strength] = 10;
 ```
 
-Lets roll some stats!
+So, why would you use an `EnumSet` instead of an associative array?
+
+`EnumSet` might be right for you if:
+
+You like ranges:
 
 ```
-Character hero;
-hero.attributes = sequence!((a,n) => uniform!"[]"(0, 20))().take(6);
+// roll for stats!
+attributes = generate!(() => uniform!"[]"(1, 20)).take(6);
 ```
 
-Note that we can assign directly from a range!
-Just like static array assignment, it will fail if the length doesn't match.
-
-We can access those values using either `opIndex` or `opDispatch`:
+You like syntactic sugar:
 
 ```
+// Boring!
 if (hero.attributes[Attribute.wisdom] < 5) hero.drink(unidentifiedPotion);
-// equivalent
+
+// Fun! And Concise!
 if (hero.attributes.wisdom < 5) hero.drink(unidentifiedPotion);
 ```
 
-If a binary operation is possible between the value types, it can be performed
-across all members in the set (similar to an array-wise operation).
+You like default values:
+
+```
+int[Attribute] aa;
+EnumSet!(Attribute, int) set;
+
+aa[Attribute.strength]; // Range violation!
+set.strength;           // 0
+```
+
+You like array-wise operations:
 
 ```
 // note the convenient assignment from an associative array:
@@ -46,10 +55,19 @@ EnumSet!(Attribute, int) bonus = {Attribute.charisma: 2, Attribute.wisom: 1};
 hero.attributes += bonus;
 ```
 
-Finally, note that we can break the `EnumSet` down into a range when needed:
+You dislike garbage day:
 
 ```
-hero.attributes = hero.attributes.byValue.map!(x => x + 1);
+      void donFancyHat(int[Attribute] aa) { aa[Attribute.charisma] += 1; }
+@nogc void donFancyHat(EnumSet!(Attribute, int) set) { set.charisma += 1; }
 ```
 
 Check the [docs](http://rcorre.github.io/enumset) for the full feature set.
+
+`EnumSet` comes in [dub package form](http://code.dlang.org/packages/enumset).
+
+```json
+"dependencies": {
+  "enumset": "~>0.1.0"
+}
+```
