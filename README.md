@@ -1,29 +1,31 @@
 EnumSet
 ===
 
-An `EnumSet` is a static array that behaves like an associative array
-specialized for using a named enum as a key type:
+An `EnumSet` is a glorified wrapper around a static array.
+Are you sold yet? No? Alright, take a look at this:
 
 ```
 enum Attribute {
  strength, dexterity, constitution, wisdom, intellect, charisma
 }
+```
 
+Now you want to map each `Attribute` to an `int`.
+You could use D's built-in associative arrays:
+
+```
+int[Attribute] attributes;
+attributes[Attribute.strength] = 10;
+```
+
+However, I think you'll like `EnumSet` better:
+
+```
 EnumSet!(Attribute, int) attributes;
-
-attributes[Attribute.Strength] = 10;
+attributes[Attribute.strength] = 10;
 ```
 
-So, why would you use an `EnumSet` instead of an associative array?
-
-`EnumSet` might be right for you if:
-
-You like ranges:
-
-```
-// roll for stats!
-attributes = generate!(() => uniform!"[]"(1, 20)).take(6);
-```
+Still not impressed? Well, you might prefer an `EnumSet` if:
 
 You like syntactic sugar:
 
@@ -33,6 +35,13 @@ if (hero.attributes[Attribute.wisdom] < 5) hero.drink(unidentifiedPotion);
 
 // Fun! And Concise!
 if (hero.attributes.wisdom < 5) hero.drink(unidentifiedPotion);
+```
+
+You like ranges:
+
+```
+// roll for stats!
+attributes = generate!(() => uniform!"[]"(1, 20)).take(6);
 ```
 
 You like default values:
