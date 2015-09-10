@@ -57,8 +57,8 @@ set.strength;           // 0
 You like array-wise operations:
 
 ```
-// note the convenient assignment from an associative array:
-EnumSet!(Attribute, int) bonus = {Attribute.charisma: 2, Attribute.wisdom: 1};
+// note the convenient constructor function:
+auto bonus = enumset(Attribute.charisma, 2, Attribute.wisdom, 1);
 
 // level up! adds 2 to charisma and 1 to wisdom.
 hero.attributes += bonus;

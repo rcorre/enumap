@@ -87,6 +87,9 @@ import std.algorithm : map;
  * default values for all keys, and some nice `opDispatch` based syntactic
  * sugar for element access.
  *
+ * The key enum must be backed by an integral type and have 'default' numbering.
+ * The backing value must start at 0 and grows by 1 for each member.
+ *
  * Params:
  * K = The type of enum used as a key.
  *     The enum values must start at 0, and increase by 1 for each entry.
@@ -98,7 +101,7 @@ struct EnumSet(K, V)
   /// The number of entries in the `EnumSet`
   enum length = EnumMembers!K.length;
 
-  /// Assuming Element consists of air, earth, water, and fire:
+  /// Assuming Element consists of air, earth, water, and fire (4 members):
   unittest {
     static assert(EnumSet!(Element, int).length == 4);
   }
@@ -111,34 +114,13 @@ struct EnumSet(K, V)
   }
 
   ///
-  unittest {
+  @nogc unittest {
     auto set = EnumSet!(Element, int)([1, 2, 3, 4]);
 
     assert(set[Element.air]   == 1);
     assert(set[Element.earth] == 2);
     assert(set[Element.water] == 3);
     assert(set[Element.fire]  == 4);
-  }
-
-  /**
-   * Construct an EnumSet from an associative array.
-   *
-   * Any values not specified in `dict` default to `V.init`.
-   */
-  this(V[K] dict) {
-    foreach(pair ; dict.byKeyValue) this[pair.key] = pair.value;
-  }
-
-  ///
-  unittest {
-    with (Element) {
-      EnumSet!(Element, int) set = [ air: 1, earth: 2, water: 3 ];
-
-      assert(set[air]   == 1);
-      assert(set[earth] == 2);
-      assert(set[water] == 3);
-      assert(set[fire]  == 0); // unspecified values default to V.init
-    }
   }
 
   /// Assign from a range with a number of elements exactly matching `length`.
@@ -152,7 +134,7 @@ struct EnumSet(K, V)
   }
 
   ///
-  unittest {
+  @nogc unittest {
     import std.range : repeat;
     EnumSet!(Element, int) elements = 9.repeat(4);
     assert(elements.air   == 9);
@@ -161,31 +143,18 @@ struct EnumSet(K, V)
     assert(elements.fire  == 9);
   }
 
-  /// An EnumSet can be assigned from any type if can be constructed from.
+  /// An EnumSet can be assigned from an array or range of values
   void opAssign(T)(T val) if (is(typeof(typeof(this)(val)))) {
     this = typeof(this)(val);
   }
 
   /// Assign an EnumSet from a static array.
-  unittest {
+  @nogc unittest {
     EnumSet!(Element, int) set;
-    set = [1, 2, 3, 4];
+    int[set.length] arr = [1, 2, 3, 4];
+    set = arr;
 
     with (Element) {
-      assert(set[air]   == 1);
-      assert(set[earth] == 2);
-      assert(set[water] == 3);
-      assert(set[fire]  == 4);
-    }
-  }
-
-  /// Assign an EnumSet from an associative array.
-  unittest {
-    EnumSet!(Element, int) set;
-
-    with (Element) {
-      set = [ air: 1, earth: 2, water: 3, fire: 4 ];
-
       assert(set[air]   == 1);
       assert(set[earth] == 2);
       assert(set[water] == 3);
@@ -194,7 +163,7 @@ struct EnumSet(K, V)
   }
 
   /// Assign an EnumSet from a range
-  unittest {
+  @nogc unittest {
     import std.range : iota;
 
     EnumSet!(Element, int) set;
@@ -275,17 +244,15 @@ struct EnumSet(K, V)
 
   ///
   unittest {
-    EnumSet!(ItemType, string[]) inventory = [
-      ItemType.junk   : [ "Gemstone"        ],
-      ItemType.normal : [ "Sword", "Shield" ],
-      ItemType.key    : [ "Bronze Key"      ]
-    ];
+    auto inventory = enumset(
+        ItemType.junk  , [ "Gemstone"        ],
+        ItemType.normal, [ "Sword", "Shield" ],
+        ItemType.key   , [ "Bronze Key"      ]);
 
-    EnumSet!(ItemType, string[]) loot = [
-      ItemType.junk   : [ "Potato"       ],
-      ItemType.normal : [ "Potion"       ],
-      ItemType.key    : [ "Skeleton Key" ]
-    ];
+    auto loot = enumset(
+        ItemType.junk  , [ "Potato"       ],
+        ItemType.normal, [ "Potion"       ],
+        ItemType.key   , [ "Skeleton Key" ]);
 
     inventory ~= loot;
 
@@ -332,14 +299,9 @@ struct EnumSet(K, V)
   }
 
   ///
-  unittest {
-    EnumSet!(Element, int) base;
-    base.water = 4;
-    base.air   = 3;
-
-    EnumSet!(Element, int) bonus;
-    bonus.water = 5;
-    bonus.fire  = 2;
+  @nogc unittest {
+    auto base  = enumset(Element.water, 4, Element.air , 3);
+    auto bonus = enumset(Element.water, 5, Element.fire, 2);
 
     base += bonus;
 
@@ -423,7 +385,50 @@ struct EnumSet(K, V)
   }
 }
 
+  /**
+   * Construct an `EnumSet` from a sequence of key/value pairs.
+   *
+   * Any values not specified default to `V.init`.
+   */
+auto enumset(T...)(T pairs) @nogc if (T.length >= 2 && T.length % 2 == 0) {
+  alias K = T[0];
+  alias V = T[1];
+
+  EnumSet!(K, V) set;
+
+  // pop a key/vaue pair, assign it to the enumset, and recurse until empty
+  void helper(U...)(U params) {
+    static assert(is(U[0] == K), "enumset: mismatched key type");
+    static assert(is(U[1] == V), "enumset: mismatched value type");
+
+    auto key = params[0];
+    auto val = params[1];
+
+    set[key] = val;
+
+    static if (U.length > 2) {
+      helper(params[2..$]);
+    }
+  }
+
+  helper(pairs);
+  return set;
+}
+
+///
+@nogc unittest {
+  with (Element) {
+    auto set = enumset(air, 1, earth, 2, water, 3);
+
+    assert(set[air]   == 1);
+    assert(set[earth] == 2);
+    assert(set[water] == 3);
+    assert(set[fire]  == 0); // unspecified values default to V.init
+  }
+}
+
 version (unittest) {
+  // define some enums for testing
   private enum Element { air, earth, water, fire };
   private enum ItemType { junk, normal, key };
 }
@@ -447,8 +452,8 @@ unittest {
   if (attributes[Attribute.wisdom] < 5) { }
   if (attributes.wisdom < 5) { }
 
-  // AA constructor
-  EnumSet!(Attribute, int) bonus = [Attribute.charisma: 2, Attribute.wisdom: 1];
+  // key/value constructor
+  auto bonus = enumset(Attribute.charisma, 2, Attribute.wisdom, 1);
 
   // opBinary
   attributes += bonus;
