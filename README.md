@@ -1,7 +1,7 @@
-EnumSet
+Enumap
 ===
 
-An `EnumSet` is a glorified wrapper around a static array.
+An `Enumap` is a glorified wrapper around a static array.
 Are you sold yet? No? Alright, take a look at this:
 
 ```
@@ -18,14 +18,14 @@ int[Attribute] attributes;
 attributes[Attribute.strength] = 10;
 ```
 
-However, I think you'll like `EnumSet` better:
+However, I think you'll like `Enumap` better:
 
 ```
-EnumSet!(Attribute, int) attributes;
+Enumap!(Attribute, int) attributes;
 attributes[Attribute.strength] = 10;
 ```
 
-Still not impressed? Well, you might prefer an `EnumSet` if:
+Still not impressed? Well, you might prefer an `Enumap` if:
 
 You like syntactic sugar:
 
@@ -48,17 +48,17 @@ You like default values:
 
 ```
 int[Attribute] aa;
-EnumSet!(Attribute, int) set;
+Enumap!(Attribute, int) em;
 
 aa[Attribute.strength]; // Range violation!
-set.strength;           // 0
+em.strength;            // 0
 ```
 
 You like array-wise operations:
 
 ```
 // note the convenient constructor function:
-auto bonus = enumset(Attribute.charisma, 2, Attribute.wisdom, 1);
+auto bonus = enumap(Attribute.charisma, 2, Attribute.wisdom, 1);
 
 // level up! adds 2 to charisma and 1 to wisdom.
 hero.attributes += bonus;
@@ -68,9 +68,9 @@ You dislike garbage day:
 
 ```
       void donFancyHat(int[Attribute] aa) { aa[Attribute.charisma] += 1; }
-@nogc void donFancyHat(EnumSet!(Attribute, int) set) { set.charisma += 1; }
+@nogc void donFancyHat(Enumap!(Attribute, int) map) { map.charisma += 1; }
 ```
 
-Check the [docs](http://rcorre.github.io/enumset) for the full feature set.
+Check the [docs](http://rcorre.github.io/enumap) for the full feature set.
 
-`EnumSet` comes in [dub package form](http://code.dlang.org/packages/enumset).
+`Enumap` comes in [dub package form](http://code.dlang.org/packages/enumap).

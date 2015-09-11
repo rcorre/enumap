@@ -1,18 +1,18 @@
 /**
- * An `EnumSet` maps each member of an enum to a single value.
+ * An `Enumap` maps each member of an enum to a single value.
  *
- * An `EnumSet` is effectively a lightweight associative array with some benefits.
+ * An `Enumap` is effectively a lightweight associative array with some benefits.
  *
- * You can think of an `EnumSet!(MyEnum, int)` somewhat like a `int[MyEnum]`,
+ * You can think of an `Enumap!(MyEnum, int)` somewhat like a `int[MyEnum]`,
  * with the following differences:
  *
- * - `EnumSet!(K,V)` is a value type and requires no dynamic memory allocation
+ * - `Enumap!(K,V)` is a value type and requires no dynamic memory allocation
  *
- * - `EnumSet!(K,V)` has a pre-initialized entry for every member of `K`
+ * - `Enumap!(K,V)` has a pre-initialized entry for every member of `K`
  *
- * - `EnumSet!(K,V)` supports the syntax `set.name` as an alias to `set[K.name]`
+ * - `Enumap!(K,V)` supports the syntax `map.name` as an alias to `map[K.name]`
  *
- * - `EnumSet!(K,V)` supports array-wise operations
+ * - `Enumap!(K,V)` supports array-wise operations
  *
  * Authors: Ryan Roden-Corrent ($(LINK2 https://github.com/rcorre, rcorre))
  * License: MIT
@@ -28,7 +28,7 @@
  * };
  *
  * struct Character {
- *  EnumSet!(Attribute, int) attributes;
+ *  Enumap!(Attribute, int) attributes;
  * }
  * ---
  *
@@ -50,26 +50,26 @@
  * if (hero.attributes.wisdom < 5) hero.drink(unidentifiedPotion);
  * ---
  *
- * We can also perform binary operations between `EnumSet`s:
+ * We can also perform binary operations between `Enumap`s:
  *
  * ---
  * // note the convenient assignment from an associative array:
- * EnumSet!(Attribute, int) bonus = {Attribute.charisma: 2, Attribute.wisom: 1};
+ * Enumap!(Attribute, int) bonus = {Attribute.charisma: 2, Attribute.wisom: 1};
  *
  * // level up! adds 2 to charisma and 1 to wisdom.
  * hero.attributes += bonus;
  * ---
  *
- * Finally, note that we can break the `EnumSet` down into a range when needed:
+ * Finally, note that we can break the `Enumap` down into a range when needed:
  *
  * ---
  * hero.attributes = hero.attributes.byValue.map!(x => x + 1);
  * ---
  *
- * See the full documentation of `EnumSet` for all the operations it supports.
+ * See the full documentation of `Enumap` for all the operations it supports.
  *
  */
-module enumset;
+module enumap;
 
 import std.conv      : to;
 import std.range;
@@ -80,7 +80,7 @@ import std.algorithm : map;
 /**
  * A structure that maps each member of an enum to a single value.
  *
- * An `EnumSet` is a lightweight alternative to an associative array that is
+ * An `Enumap` is a lightweight alternative to an associative array that is
  * useable when your key type is an enum.
  *
  * It provides some added benefits over the AA, such as array-wise operations,
@@ -95,86 +95,86 @@ import std.algorithm : map;
  *     The enum values must start at 0, and increase by 1 for each entry.
  * V = The type of value stored for each enum member
  */
-struct EnumSet(K, V)
+struct Enumap(K, V)
   if(EnumMembers!K == staticIota!(0, EnumMembers!K.length))
 {
-  /// The number of entries in the `EnumSet`
+  /// The number of entries in the `Enumap`
   enum length = EnumMembers!K.length;
 
   /// Assuming Element consists of air, earth, water, and fire (4 members):
   unittest {
-    static assert(EnumSet!(Element, int).length == 4);
+    static assert(Enumap!(Element, int).length == 4);
   }
 
   private V[length] _store;
 
-  /// Construct an EnumSet from a static array.
+  /// Construct an Enumap from a static array.
   this(V[length] values) {
     _store = values;
   }
 
   ///
   @nogc unittest {
-    auto set = EnumSet!(Element, int)([1, 2, 3, 4]);
+    auto elements = Enumap!(Element, int)([1, 2, 3, 4]);
 
-    assert(set[Element.air]   == 1);
-    assert(set[Element.earth] == 2);
-    assert(set[Element.water] == 3);
-    assert(set[Element.fire]  == 4);
+    assert(elements[Element.air]   == 1);
+    assert(elements[Element.earth] == 2);
+    assert(elements[Element.water] == 3);
+    assert(elements[Element.fire]  == 4);
   }
 
   /// Assign from a range with a number of elements exactly matching `length`.
   this(R)(R values) if (isInputRange!R && is(ElementType!R : V)) {
     int i = 0;
     foreach(val ; values) {
-      assert(i < length, "range contains more values than EnumSet");
+      assert(i < length, "range contains more values than Enumap");
       _store[i++] = val;
     }
-    assert(i == length, "range contains less values than EnumSet");
+    assert(i == length, "range contains less values than Enumap");
   }
 
   ///
   @nogc unittest {
     import std.range : repeat;
-    EnumSet!(Element, int) elements = 9.repeat(4);
+    Enumap!(Element, int) elements = 9.repeat(4);
     assert(elements.air   == 9);
     assert(elements.earth == 9);
     assert(elements.water == 9);
     assert(elements.fire  == 9);
   }
 
-  /// An EnumSet can be assigned from an array or range of values
+  /// An Enumap can be assigned from an array or range of values
   void opAssign(T)(T val) if (is(typeof(typeof(this)(val)))) {
     this = typeof(this)(val);
   }
 
-  /// Assign an EnumSet from a static array.
+  /// Assign an Enumap from a static array.
   @nogc unittest {
-    EnumSet!(Element, int) set;
-    int[set.length] arr = [1, 2, 3, 4];
-    set = arr;
+    Enumap!(Element, int) elements;
+    int[elements.length] arr = [1, 2, 3, 4];
+    elements = arr;
 
     with (Element) {
-      assert(set[air]   == 1);
-      assert(set[earth] == 2);
-      assert(set[water] == 3);
-      assert(set[fire]  == 4);
+      assert(elements[air]   == 1);
+      assert(elements[earth] == 2);
+      assert(elements[water] == 3);
+      assert(elements[fire]  == 4);
     }
   }
 
-  /// Assign an EnumSet from a range
+  /// Assign an Enumap from a range
   @nogc unittest {
     import std.range : iota;
 
-    EnumSet!(Element, int) set;
+    Enumap!(Element, int) elements;
 
     with (Element) {
-      set = iota(0, 4);
+      elements = iota(0, 4);
 
-      assert(set[air]   == 0);
-      assert(set[earth] == 1);
-      assert(set[water] == 2);
-      assert(set[fire]  == 3);
+      assert(elements[air]   == 0);
+      assert(elements[earth] == 1);
+      assert(elements[water] == 2);
+      assert(elements[fire]  == 3);
     }
   }
 
@@ -189,7 +189,7 @@ struct EnumSet(K, V)
 
   ///
   @nogc unittest {
-    EnumSet!(Element, int) elements;
+    Enumap!(Element, int) elements;
     elements[Element.fire] = 4;
     assert(elements[Element.fire] == 4);
   }
@@ -198,7 +198,7 @@ struct EnumSet(K, V)
    * Access the value at the index specified by the name of an enum member.
    *
    * The value is returned by reference, so it can used for assignment.
-   * `set.name` is just syntactic sugar for `set[SomeEnum.name]`.
+   * `map.name` is just syntactic sugar for `map[SomeEnum.name]`.
    */
   ref auto opDispatch(string s)() {
     enum key = s.to!K;
@@ -207,7 +207,7 @@ struct EnumSet(K, V)
 
   ///
   @nogc unittest {
-    EnumSet!(Element, int) elements;
+    Enumap!(Element, int) elements;
     elements.water = 5;
     assert(elements.water == 5);
   }
@@ -217,7 +217,7 @@ struct EnumSet(K, V)
 
   /// foreach iterates over (EnumMember, value) pairs.
   @nogc unittest {
-    EnumSet!(Element, int) elements;
+    Enumap!(Element, int) elements;
     elements.water = 4;
     elements.air   = 3;
 
@@ -230,7 +230,7 @@ struct EnumSet(K, V)
     }
   }
 
-  /// Apply an array-wise operation between two `EnumSet`s.
+  /// Apply an array-wise operation between two `Enumap`s.
   auto opBinary(string op)(typeof(this) other)
     if (is(typeof(mixin("V.init"~op~"V.init")) : V))
   {
@@ -244,12 +244,12 @@ struct EnumSet(K, V)
 
   ///
   unittest {
-    auto inventory = enumset(
+    auto inventory = enumap(
         ItemType.junk  , [ "Gemstone"        ],
         ItemType.normal, [ "Sword", "Shield" ],
         ItemType.key   , [ "Bronze Key"      ]);
 
-    auto loot = enumset(
+    auto loot = enumap(
         ItemType.junk  , [ "Potato"       ],
         ItemType.normal, [ "Potion"       ],
         ItemType.key   , [ "Skeleton Key" ]);
@@ -263,11 +263,11 @@ struct EnumSet(K, V)
 
   ///
   @nogc unittest {
-    EnumSet!(Element, int) base;
+    Enumap!(Element, int) base;
     base.water = 4;
     base.air   = 3;
 
-    EnumSet!(Element, int) bonus;
+    Enumap!(Element, int) bonus;
     bonus.water = 5;
     bonus.fire  = 2;
 
@@ -300,8 +300,8 @@ struct EnumSet(K, V)
 
   ///
   @nogc unittest {
-    auto base  = enumset(Element.water, 4, Element.air , 3);
-    auto bonus = enumset(Element.water, 5, Element.fire, 2);
+    auto base  = enumap(Element.water, 4, Element.air , 3);
+    auto bonus = enumap(Element.water, 5, Element.fire, 2);
 
     base += bonus;
 
@@ -333,7 +333,7 @@ struct EnumSet(K, V)
   }
 
   @nogc unittest {
-    EnumSet!(Element, int) elements;
+    Enumap!(Element, int) elements;
     elements.water = 4;
 
     assert((-elements).water == -4);
@@ -346,7 +346,7 @@ struct EnumSet(K, V)
     import std.range     : only;
     import std.algorithm : equal;
 
-    EnumSet!(Element, int) e;
+    Enumap!(Element, int) e;
     with (Element) {
       assert(e.byKey.equal(only(air, earth, water, fire)));
     }
@@ -359,8 +359,8 @@ struct EnumSet(K, V)
     import std.range     : iota;
     import std.algorithm : map, equal;
 
-    EnumSet!(Element, int) e1 = iota(0, 4);
-    EnumSet!(Element, int) e2 = e1.byValue.map!(x => x + 2);
+    Enumap!(Element, int) e1 = iota(0, 4);
+    Enumap!(Element, int) e2 = e1.byValue.map!(x => x + 2);
     assert(e2.byValue.equal(iota(2, 6)));
   }
 
@@ -371,7 +371,7 @@ struct EnumSet(K, V)
 
   ///
   @nogc unittest {
-    EnumSet!(Element, int) elements;
+    Enumap!(Element, int) elements;
     elements.water = 4;
     elements.air = 3;
 
@@ -386,25 +386,25 @@ struct EnumSet(K, V)
 }
 
   /**
-   * Construct an `EnumSet` from a sequence of key/value pairs.
+   * Construct an `Enumap` from a sequence of key/value pairs.
    *
    * Any values not specified default to `V.init`.
    */
-auto enumset(T...)(T pairs) @nogc if (T.length >= 2 && T.length % 2 == 0) {
+auto enumap(T...)(T pairs) @nogc if (T.length >= 2 && T.length % 2 == 0) {
   alias K = T[0];
   alias V = T[1];
 
-  EnumSet!(K, V) set;
+  Enumap!(K, V) result;
 
-  // pop a key/vaue pair, assign it to the enumset, and recurse until empty
+  // pop a key/vaue pair, assign it to the enumap, and recurse until empty
   void helper(U...)(U params) {
-    static assert(is(U[0] == K), "enumset: mismatched key type");
-    static assert(is(U[1] == V), "enumset: mismatched value type");
+    static assert(is(U[0] == K), "enumap: mismatched key type");
+    static assert(is(U[1] == V), "enumap: mismatched value type");
 
     auto key = params[0];
     auto val = params[1];
 
-    set[key] = val;
+    result[key] = val;
 
     static if (U.length > 2) {
       helper(params[2..$]);
@@ -412,18 +412,18 @@ auto enumset(T...)(T pairs) @nogc if (T.length >= 2 && T.length % 2 == 0) {
   }
 
   helper(pairs);
-  return set;
+  return result;
 }
 
 ///
 @nogc unittest {
   with (Element) {
-    auto set = enumset(air, 1, earth, 2, water, 3);
+    auto elements = enumap(air, 1, earth, 2, water, 3);
 
-    assert(set[air]   == 1);
-    assert(set[earth] == 2);
-    assert(set[water] == 3);
-    assert(set[fire]  == 0); // unspecified values default to V.init
+    assert(elements[air]   == 1);
+    assert(elements[earth] == 2);
+    assert(elements[water] == 3);
+    assert(elements[fire]  == 0); // unspecified values default to V.init
   }
 }
 
@@ -441,7 +441,7 @@ unittest {
     strength, dexterity, constitution, wisdom, intellect, charisma
   }
 
-  EnumSet!(Attribute, int) attributes;
+  Enumap!(Attribute, int) attributes;
   assert(attributes.wisdom == 0); // default value check
 
   attributes[Attribute.strength] = 10;
@@ -453,12 +453,12 @@ unittest {
   if (attributes.wisdom < 5) { }
 
   // key/value constructor
-  auto bonus = enumset(Attribute.charisma, 2, Attribute.wisdom, 1);
+  auto bonus = enumap(Attribute.charisma, 2, Attribute.wisdom, 1);
 
   // opBinary
   attributes += bonus;
 
   // nogc test
-  void donFancyHat(int[Attribute] aa) { aa[Attribute.charisma] += 1; }
-  @nogc void donFancyHat2(EnumSet!(Attribute, int) set) { set.charisma += 1; }
+  void donFancyHat(int[Attribute] attrs) { attrs[Attribute.charisma] += 1; }
+  @nogc void donFancyHat2(Enumap!(Attribute, int) attrs) { attrs.charisma += 1; }
 }
