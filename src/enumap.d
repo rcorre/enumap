@@ -212,8 +212,22 @@ struct Enumap(K, V)
     assert(elements.water == 5);
   }
 
-  /// Return a range of (EnumMember, value) pairs.
-  alias opSlice = byKeyValue;
+  /// Execute a foreach statement over (EnumMember, value) pairs.
+  int opApply(scope int delegate(K, ref V) dg) {
+    // declare the callee as @nogc so @nogc callers can use foreach
+    // oddly, this works even if dg is non-nogc... huh?
+    // I'm just gonna take this and run before the compiler catches me.
+    auto callme = cast(int delegate(K, ref V) @nogc) dg;
+
+    int res = 0;
+
+    foreach(key ; EnumMembers!K) {
+      res = callme(key, this[key]);
+      if (res) break;
+    }
+
+    return res;
+  }
 
   /// foreach iterates over (EnumMember, value) pairs.
   @nogc unittest {
@@ -226,8 +240,26 @@ struct Enumap(K, V)
           key == Element.water && value == 4 ||
           key == Element.air   && value == 3 ||
           value == 0);
-
     }
+  }
+
+  /// foreach can modify values by ref
+  @nogc unittest {
+    Enumap!(Element, int) elements;
+
+    foreach(key, ref value ; elements) {
+      if      (key == Element.air)   value = 4;
+      else if (key == Element.water) value = 2;
+    }
+
+    assert(elements.air   == 4);
+    assert(elements.water == 2);
+  }
+
+  // make sure you can foreach with a non-nogc delegate
+  unittest {
+    foreach(key, ref value ; enumap(Element.water, "here comes..."))
+      value ~= "a spurious allocation!";
   }
 
   /// Apply an array-wise operation between two `Enumap`s.
