@@ -74,9 +74,3 @@ You dislike garbage day:
 Check the [docs](http://rcorre.github.io/enumset) for the full feature set.
 
 `EnumSet` comes in [dub package form](http://code.dlang.org/packages/enumset).
-
-```json
-"dependencies": {
-  "enumset": "~>0.1.0"
-}
-```
