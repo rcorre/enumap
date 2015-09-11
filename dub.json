@@ -1,7 +1,8 @@
 {
 	"name": "enumset",
-	"description": "A lightweight structure that maps enum member to values",
+	"description": "A lightweight structure that maps enum members to values",
 	"copyright": "Copyright © 2015, Ryan Roden-Corrent",
+  "license": "MIT",
 	"authors": ["rcorre"],
 	"dependencies": {
 	}
