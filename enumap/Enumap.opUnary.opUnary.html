@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Alias EnumSet.opSlice</title>
+		<title>Function Enumap.opUnary.opUnary</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,37 +32,15 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Alias EnumSet.opSlice</h1>
+			<h1>Function Enumap.opUnary.opUnary</h1>
 			<section>
-				<p>Return a range of (EnumMember, value) pairs.
-</p>
+				<p></p>
 
 					<section>
-						<h3>Declaration</h3>
+						<h3>Prototype</h3>
 						<pre class="code prettyprint lang-d prototype">
-struct <a href="../enumset/EnumSet.html">EnumSet</a>
-{
-	// ...
-	alias opSlice = <code class="prettyprint lang-d">byKeyValue</code>;
-	// ...
-}</pre>
+auto opUnary();</pre>
 					</section>
-<section><h3>Example</h3>
-<p>foreach iterates over (EnumMember, value) pairs.
-</p>
-<pre class="code prettyprint lang-d">import std.format;
-
-<a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) elements = [Element.water : 4, Element.air : 3];
-string[] result;
-
-foreach(element, value ; elements) {
-  result ~= "%s : %s".format(element, value);
-}
-
-assert(result == ["air : 3", "earth : 0", "water : 4", "fire : 0"]);
-
-</pre>
-</section>
 
 			</section>
 			<section>

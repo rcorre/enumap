@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Module enumset</title>
+		<title>Module enumap</title>
 		<link rel="stylesheet" type="text/css" href="./styles/ddox.css"/>
 		<link rel="stylesheet" href="./prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="./scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="./enumset.html" class="selected module">enumset</a>
+								<a href="./enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,27 +32,27 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Module enumset</h1>
-			<p> An <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code> maps each member of an enum to a single value.
+			<h1>Module enumap</h1>
+			<p> An <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a></code> maps each member of an enum to a single value.
 </p>
 <section>
-<p> An <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code> is effectively a lightweight associative array with some benefits.
+<p> An <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a></code> is effectively a lightweight associative array with some benefits.
 </p>
 
-<p> You can think of an <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(MyEnum, int)</code> somewhat like a <code class="prettyprint lang-d">int[MyEnum]</code>,
+<p> You can think of an <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a>!(MyEnum, int)</code> somewhat like a <code class="prettyprint lang-d">int[MyEnum]</code>,
  with the following differences:
 </p>
 
-<p> - <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(K,V)</code> is a value type and requires no dynamic memory allocation
+<p> - <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a>!(K,V)</code> is a value type and requires no dynamic memory allocation
 </p>
 
-<p> - <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(K,V)</code> has a pre-initialized entry for every member of <code class="prettyprint lang-d">K</code>
+<p> - <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a>!(K,V)</code> has a pre-initialized entry for every member of <code class="prettyprint lang-d">K</code>
 </p>
 
-<p> - <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(K,V)</code> supports the syntax <code class="prettyprint lang-d">set.name</code> as an alias to <code class="prettyprint lang-d">set[K.name]</code>
+<p> - <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a>!(K,V)</code> supports the syntax <code class="prettyprint lang-d">map.name</code> as an alias to <code class="prettyprint lang-d">map[K.name]</code>
 </p>
 
-<p> - <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a>!(K,V)</code> supports array-wise operations
+<p> - <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a>!(K,V)</code> supports array-wise operations
 </p>
 
 </section>
@@ -67,7 +67,7 @@ $('#symbolSearchPane').show();
 };
 
 struct Character {
- <a href="./enumset/EnumSet.html">EnumSet</a>!(Attribute, int) attributes;
+ <a href="./enumap/Enumap.html">Enumap</a>!(Attribute, int) attributes;
 }
 </pre>
 
@@ -79,7 +79,7 @@ hero.attributes = sequence!((a,n) => uniform!"[]"(0, 20))().take(6);
 </pre>
 
 <p> Note that we can assign directly from a range!
- Just like the array assignment, it will fail if the length doesn't match.
+ Just like static array assignment, it will fail if the length doesn't match.
 </p>
 
 <p> We can access those values using either <code class="prettyprint lang-d">opIndex</code> or <code class="prettyprint lang-d">opDispatch</code>:
@@ -90,27 +90,46 @@ hero.attributes = sequence!((a,n) => uniform!"[]"(0, 20))().take(6);
 if (hero.attributes.wisdom < 5) hero.drink(unidentifiedPotion);
 </pre>
 
-<p> We can also perform binary operations between <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code>s:
+<p> We can also perform binary operations between <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a></code>s:
 </p>
 
 <pre class="code prettyprint lang-d">// note the convenient assignment from an associative array:
-<a href="./enumset/EnumSet.html">EnumSet</a>!(Attribute, int) bonus = {Attribute.charisma: 2, Attribute.wisom: 1};
+<a href="./enumap/Enumap.html">Enumap</a>!(Attribute, int) bonus = {Attribute.charisma: 2, Attribute.wisom: 1};
 
 // level up! adds 2 to charisma and 1 to wisdom.
 hero.attributes += bonus;
 </pre>
 
-<p> Finally, note that we can break the <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code> down into a range when needed:
+<p> Finally, note that we can break the <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a></code> down into a range when needed:
 </p>
 
 <pre class="code prettyprint lang-d">hero.attributes = hero.attributes.byValue.map!(x => x + 1);
 </pre>
 
-<p> See the full documentation of <code class="prettyprint lang-d"><a href="./enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code> for all the operations it supports.
+<p> See the full documentation of <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a></code> for all the operations it supports.
 </p>
 
 </section>
 </section>
+			<section>
+				<h2>Functions</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a id="enumap" class="public" href="./enumap/enumap.html">
+								<code>enumap</code>
+							</a>
+						</td>
+						<td> Construct an <code class="prettyprint lang-d"><a href="./enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a></code> from a sequence of key/value <a href="./enumap/enumap.html#pairs"><code class="prettyprint lang-d">pairs</code></a>.
+</td>
+					</tr>
+				</table>
+			</section>
 			<section>
 				<h2>Structs</h2>
 				<table>
@@ -121,8 +140,8 @@ hero.attributes += bonus;
 					</tr>
 					<tr>
 						<td>
-							<a id="EnumSet" class="public" href="./enumset/EnumSet.html">
-								<code>EnumSet</code>
+							<a id="Enumap" class="public" href="./enumap/Enumap.html">
+								<code>Enumap</code>
 							</a>
 						</td>
 						<td> A structure that maps each member of an enum to a single value.

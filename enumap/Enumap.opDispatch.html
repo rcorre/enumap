@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Function EnumSet.this.this</title>
+		<title>Template Enumap.opDispatch</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,17 +32,45 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Function EnumSet.this.this</h1>
+			<h1>Template Enumap.opDispatch</h1>
 			<section>
-				<p></p>
+				<p> Access the value at the index specified by the name of an enum member.
+</p>
+<section>
+<p> The value is returned by reference, so it can used for assignment.
+ <code class="prettyprint lang-d">map.name</code> is just syntactic sugar for <code class="prettyprint lang-d">map[SomeEnum.name]</code>.
+</p>
+</section>
 
 					<section>
-						<h3>Prototype</h3>
+						<h2>Arguments</h2>
 						<pre class="code prettyprint lang-d prototype">
-this(
-&nbsp;&nbsp;R values
-);</pre>
+template opDispatch(string s);</pre>
 					</section>
+					<section>
+						<h3>Functions</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Function name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../enumap/Enumap.opDispatch.opDispatch.html">opDispatch</a>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+<section><h3>Example</h3>
+
+<pre class="code prettyprint lang-d"><a href="../enumap/Enumap.html">Enumap</a>!(Element, int) elements;
+elements.water = 5;
+assert(elements.water == 5);
+
+</pre>
+</section>
 
 			</section>
 			<section>

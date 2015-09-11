@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Template EnumSet.opDispatch</title>
+		<title>Template Enumap.opOpAssign</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,20 +32,15 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Template EnumSet.opDispatch</h1>
+			<h1>Template Enumap.opOpAssign</h1>
 			<section>
-				<p> Access the value at the index specified by the name of an enum member.
+				<p>Perform an in-place operation.
 </p>
-<section>
-<p> The value is returned by reference, so it can used for assignment.
- <code class="prettyprint lang-d">set.name</code> is just syntactic sugar for <code class="prettyprint lang-d">set[SomeEnum.name]</code>.
-</p>
-</section>
 
 					<section>
 						<h2>Arguments</h2>
 						<pre class="code prettyprint lang-d prototype">
-template opDispatch(string s);</pre>
+template opOpAssign(string op);</pre>
 					</section>
 					<section>
 						<h3>Functions</h3>
@@ -57,7 +52,7 @@ template opDispatch(string s);</pre>
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opDispatch.opDispatch.html">opDispatch</a>
+									<a href="../enumap/Enumap.opOpAssign.opOpAssign.html">opOpAssign</a>
 								</td>
 								<td></td>
 							</tr>
@@ -65,9 +60,28 @@ template opDispatch(string s);</pre>
 					</section>
 <section><h3>Example</h3>
 
-<pre class="code prettyprint lang-d"><a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) elements;
-elements.water = 5;
-assert(elements.water == 5);
+<pre class="code prettyprint lang-d">auto base  = <a href="../enumap/enumap.html">enumap</a>(Element.water, 4, Element.air , 3);
+auto bonus = <a href="../enumap/enumap.html">enumap</a>(Element.water, 5, Element.fire, 2);
+
+base += bonus;
+
+assert(base.water == 4 + 5);
+assert(base.air   == 3 + 0);
+assert(base.fire  == 0 + 2);
+assert(base.earth == 0 + 0);
+
+base -= bonus; // cancel out the previous addition
+
+assert(base.water == 4);
+assert(base.air   == 3);
+assert(base.fire  == 0);
+assert(base.earth == 0);
+
+base *= bonus;
+assert(base.water == 4 * 5);
+assert(base.air   == 3 * 0);
+assert(base.fire  == 0 * 2);
+assert(base.earth == 0 * 0);
 
 </pre>
 </section>

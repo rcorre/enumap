@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>EnumSet.this - multiple declarations</title>
+		<title>Enumap.this - multiple declarations</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,15 +32,14 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>EnumSet.this - multiple declarations</h1>
+			<h1>Enumap.this - multiple declarations</h1>
 			<ul>
-				<li>Function EnumSet.this</li>
-				<li>Function EnumSet.this</li>
-				<li>Template EnumSet.this</li>
+				<li>Function Enumap.this</li>
+				<li>Template Enumap.this</li>
 			</ul>
 			<section>
-				<h2>Function EnumSet.this</h2>
-				<p>Construct an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from a static array.
+				<h2>Function Enumap.this</h2>
+				<p>Construct an <a href="../enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a> from a static array.
 </p>
 
 					<section>
@@ -52,51 +51,20 @@ this(
 					</section>
 <section><h3>Example</h3>
 
-<pre class="code prettyprint lang-d">auto set = <a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int)([1, 2, 3, 4]);
+<pre class="code prettyprint lang-d">auto elements = <a href="../enumap/Enumap.html">Enumap</a>!(Element, int)([1, 2, 3, 4]);
 
-assert(set[Element.air]   == 1);
-assert(set[Element.earth] == 2);
-assert(set[Element.water] == 3);
-assert(set[Element.fire]  == 4);
-
-</pre>
-</section>
-
-			</section>
-			<section>
-				<h2>Function EnumSet.this</h2>
-				<p> Construct an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from an associative array.
-</p>
-<section>
-<p> Any values not specified in <code class="prettyprint lang-d"><a href="../enumset/EnumSet.this.html#dict"><code class="prettyprint lang-d">dict</code></a></code> default to <code class="prettyprint lang-d">V.init</code>.
-</p>
-</section>
-
-					<section>
-						<h3>Prototype</h3>
-						<pre class="code prettyprint lang-d prototype">
-this(
-&nbsp;&nbsp;V[K] dict
-);</pre>
-					</section>
-<section><h3>Example</h3>
-
-<pre class="code prettyprint lang-d">with (Element) {
-  <a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) set = [ air: 1, earth: 2, water: 3 ];
-
-  assert(set[air]   == 1);
-  assert(set[earth] == 2);
-  assert(set[water] == 3);
-  assert(set[fire]  == 0); // unspecified values default to V.init
-}
+assert(elements[Element.air]   == 1);
+assert(elements[Element.earth] == 2);
+assert(elements[Element.water] == 3);
+assert(elements[Element.fire]  == 4);
 
 </pre>
 </section>
 
 			</section>
 			<section>
-				<h2>Template EnumSet.this</h2>
-				<p>Assign from a range with a number of elements exactly matching <code class="prettyprint lang-d"><a href="../enumset/EnumSet.length.html"><code class="prettyprint lang-d">length</code></a></code>.
+				<h2>Template Enumap.this</h2>
+				<p>Assign from a range with a number of elements exactly matching <code class="prettyprint lang-d"><a href="../enumap/Enumap.length.html"><code class="prettyprint lang-d">length</code></a></code>.
 </p>
 
 					<section>
@@ -114,7 +82,7 @@ template this(R);</pre>
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.this.this.html">this</a>
+									<a href="../enumap/Enumap.this.this.html">this</a>
 								</td>
 								<td></td>
 							</tr>
@@ -123,7 +91,7 @@ template this(R);</pre>
 <section><h3>Example</h3>
 
 <pre class="code prettyprint lang-d">import std.range : repeat;
-<a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) elements = 9.repeat(4);
+<a href="../enumap/Enumap.html">Enumap</a>!(Element, int) elements = 9.repeat(4);
 assert(elements.air   == 9);
 assert(elements.earth == 9);
 assert(elements.water == 9);

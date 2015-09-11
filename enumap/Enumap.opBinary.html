@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Template EnumSet.opAssign</title>
+		<title>Template Enumap.opBinary</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,15 +32,15 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Template EnumSet.opAssign</h1>
+			<h1>Template Enumap.opBinary</h1>
 			<section>
-				<p>An <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> can be assigned from any type if can be constructed from.
+				<p>Apply an array-wise operation between two <code class="prettyprint lang-d"><a href="../enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a></code>s.
 </p>
 
 					<section>
 						<h2>Arguments</h2>
 						<pre class="code prettyprint lang-d prototype">
-template opAssign(T);</pre>
+template opBinary(string op);</pre>
 					</section>
 					<section>
 						<h3>Functions</h3>
@@ -52,58 +52,60 @@ template opAssign(T);</pre>
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opAssign.opAssign.html">opAssign</a>
+									<a href="../enumap/Enumap.opBinary.opBinary.html">opBinary</a>
 								</td>
 								<td></td>
 							</tr>
 						</table>
 					</section>
 <section><h3>Example</h3>
-<p>Assign an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from a static array.
-</p>
-<pre class="code prettyprint lang-d"><a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) set;
-set = [1, 2, 3, 4];
 
-with (Element) {
-  assert(set[air]   == 1);
-  assert(set[earth] == 2);
-  assert(set[water] == 3);
-  assert(set[fire]  == 4);
-}
+<pre class="code prettyprint lang-d">auto inventory = <a href="../enumap/enumap.html">enumap</a>(
+    ItemType.junk  , [ "Gemstone"        ],
+    ItemType.normal, [ "Sword", "Shield" ],
+    ItemType.key   , [ "Bronze Key"      ]);
 
-</pre>
-</section>
-<section><h3>Example</h3>
-<p>Assign an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from an associative array.
-</p>
-<pre class="code prettyprint lang-d"><a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) set;
+auto loot = <a href="../enumap/enumap.html">enumap</a>(
+    ItemType.junk  , [ "Potato"       ],
+    ItemType.normal, [ "Potion"       ],
+    ItemType.key   , [ "Skeleton Key" ]);
 
-with (Element) {
-  set = [ air: 1, earth: 2, water: 3, fire: 4 ];
+inventory ~= loot;
 
-  assert(set[air]   == 1);
-  assert(set[earth] == 2);
-  assert(set[water] == 3);
-  assert(set[fire]  == 4);
-}
+assert(inventory.junk   == [ "Gemstone", "Potato"          ]);
+assert(inventory.normal == [ "Sword", "Shield" , "Potion"  ]);
+assert(inventory.key    == [ "Bronze Key" , "Skeleton Key" ]);
 
 </pre>
 </section>
 <section><h3>Example</h3>
-<p>Assign an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from a range
-</p>
-<pre class="code prettyprint lang-d">import std.range : iota;
 
-<a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) set;
+<pre class="code prettyprint lang-d"><a href="../enumap/Enumap.html">Enumap</a>!(Element, int) base;
+base.water = 4;
+base.air   = 3;
 
-with (Element) {
-  set = iota(0, 4);
+<a href="../enumap/Enumap.html">Enumap</a>!(Element, int) bonus;
+bonus.water = 5;
+bonus.fire  = 2;
 
-  assert(set[air]   == 0);
-  assert(set[earth] == 1);
-  assert(set[water] == 2);
-  assert(set[fire]  == 3);
-}
+auto sum = base + bonus;
+auto diff = base - bonus;
+auto prod = base * bonus;
+
+assert(sum.water == 4 + 5);
+assert(sum.air   == 3 + 0);
+assert(sum.fire  == 0 + 2);
+assert(sum.earth == 0 + 0);
+
+assert(diff.water == 4 - 5);
+assert(diff.air   == 3 - 0);
+assert(diff.fire  == 0 - 2);
+assert(diff.earth == 0 - 0);
+
+assert(prod.water == 4 * 5);
+assert(prod.air   == 3 * 0);
+assert(prod.fire  == 0 * 2);
+assert(prod.earth == 0 * 0);
 
 </pre>
 </section>

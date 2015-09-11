@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Struct EnumSet</title>
+		<title>Struct Enumap</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,18 +32,22 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Struct EnumSet</h1>
+			<h1>Struct Enumap</h1>
 			<section>
 				<p> A structure that maps each member of an enum to a single value.
 </p>
 <section>
-<p> An <code class="prettyprint lang-d"><code class="prettyprint lang-d">EnumSet</code></code> is a lightweight alternative to an associative array that is
+<p> An <code class="prettyprint lang-d"><code class="prettyprint lang-d">Enumap</code></code> is a lightweight alternative to an associative array that is
  useable when your key type is an enum.
 </p>
 
 <p> It provides some added benefits over the AA, such as array-wise operations,
- default values for all keys, and some nice <code class="prettyprint lang-d"><a href="../enumset/EnumSet.opDispatch.html"><code class="prettyprint lang-d">opDispatch</code></a></code> based syntactic
+ default values for all keys, and some nice <code class="prettyprint lang-d"><a href="../enumap/Enumap.opDispatch.html"><code class="prettyprint lang-d">opDispatch</code></a></code> based syntactic
  sugar for element access.
+</p>
+
+<p> The key enum must be backed by an integral type and have 'default' numbering.
+ The backing value must start at 0 and grows by 1 for each member.
 </p>
 
 </section>
@@ -58,20 +62,11 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.this.html" class="public">
+									<a href="../enumap/Enumap.this.html" class="public">
 										<code>this</code>
 									</a>
 								</td>
-								<td>Construct an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from a static array.
-</td>
-							</tr>
-							<tr>
-								<td>
-									<a href="../enumset/EnumSet.this.html" class="public">
-										<code>this</code>
-									</a>
-								</td>
-								<td> Construct an <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> from an associative array.
+								<td>Construct an <a href="../enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a> from a static array.
 </td>
 							</tr>
 						</table>
@@ -86,7 +81,7 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.byKey.html" class="public">
+									<a href="../enumap/Enumap.byKey.html" class="public">
 										<code>byKey</code>
 									</a>
 								</td>
@@ -95,7 +90,7 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.byKeyValue.html" class="public">
+									<a href="../enumap/Enumap.byKeyValue.html" class="public">
 										<code>byKeyValue</code>
 									</a>
 								</td>
@@ -104,7 +99,7 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.byValue.html" class="public">
+									<a href="../enumap/Enumap.byValue.html" class="public">
 										<code>byValue</code>
 									</a>
 								</td>
@@ -113,7 +108,7 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opIndex.html" class="public">
+									<a href="../enumap/Enumap.opIndex.html" class="public">
 										<code>opIndex</code>
 									</a>
 								</td>
@@ -132,7 +127,7 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opSlice.html" class="public">
+									<a href="../enumap/Enumap.opSlice.html" class="public">
 										<code>opSlice</code>
 									</a>
 								</td>
@@ -151,25 +146,25 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opAssign.html" class="public">
+									<a href="../enumap/Enumap.opAssign.html" class="public">
 										<code>opAssign</code>
 									</a>
 								</td>
-								<td>An <a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a> can be assigned from any type if can be constructed from.
+								<td>An <a href="../enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a> can be assigned from an array or range of values
 </td>
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opBinary.html" class="public">
+									<a href="../enumap/Enumap.opBinary.html" class="public">
 										<code>opBinary</code>
 									</a>
 								</td>
-								<td>Apply an array-wise operation between two <code class="prettyprint lang-d"><a href="../enumset/EnumSet.html"><code class="prettyprint lang-d">EnumSet</code></a></code>s.
+								<td>Apply an array-wise operation between two <code class="prettyprint lang-d"><a href="../enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a></code>s.
 </td>
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opDispatch.html" class="public">
+									<a href="../enumap/Enumap.opDispatch.html" class="public">
 										<code>opDispatch</code>
 									</a>
 								</td>
@@ -178,7 +173,7 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opOpAssign.html" class="public">
+									<a href="../enumap/Enumap.opOpAssign.html" class="public">
 										<code>opOpAssign</code>
 									</a>
 								</td>
@@ -187,7 +182,7 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opUnary.html" class="public">
+									<a href="../enumap/Enumap.opUnary.html" class="public">
 										<code>opUnary</code>
 									</a>
 								</td>
@@ -196,11 +191,11 @@ $('#symbolSearchPane').show();
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.this.html" class="public">
+									<a href="../enumap/Enumap.this.html" class="public">
 										<code>this</code>
 									</a>
 								</td>
-								<td>Assign from a range with a number of elements exactly matching <code class="prettyprint lang-d"><a href="../enumset/EnumSet.length.html"><code class="prettyprint lang-d">length</code></a></code>.
+								<td>Assign from a range with a number of elements exactly matching <code class="prettyprint lang-d"><a href="../enumap/Enumap.length.html"><code class="prettyprint lang-d">length</code></a></code>.
 </td>
 							</tr>
 						</table>

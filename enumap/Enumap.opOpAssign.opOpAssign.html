@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Template EnumSet.opOpAssign</title>
+		<title>Function Enumap.opOpAssign.opOpAssign</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,59 +32,17 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Template EnumSet.opOpAssign</h1>
+			<h1>Function Enumap.opOpAssign.opOpAssign</h1>
 			<section>
-				<p>Perform an in-place operation.
-</p>
+				<p></p>
 
 					<section>
-						<h2>Arguments</h2>
+						<h3>Prototype</h3>
 						<pre class="code prettyprint lang-d prototype">
-template opOpAssign(string op);</pre>
+auto opOpAssign(
+&nbsp;&nbsp;typeof(this) other
+);</pre>
 					</section>
-					<section>
-						<h3>Functions</h3>
-						<table>
-							<col class="caption"/>
-							<tr>
-								<th>Function name</th>
-								<th>Description</th>
-							</tr>
-							<tr>
-								<td>
-									<a href="../enumset/EnumSet.opOpAssign.opOpAssign.html">opOpAssign</a>
-								</td>
-								<td></td>
-							</tr>
-						</table>
-					</section>
-<section><h3>Example</h3>
-
-<pre class="code prettyprint lang-d"><a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) base  = [Element.water : 4, Element.air : 3];
-<a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) bonus = [Element.water : 5, Element.fire : 2];
-
-base += bonus;
-
-assert(base.water == 4 + 5);
-assert(base.air   == 3 + 0);
-assert(base.fire  == 0 + 2);
-assert(base.earth == 0 + 0);
-
-base -= bonus; // cancel out the previous addition
-
-assert(base.water == 4);
-assert(base.air   == 3);
-assert(base.fire  == 0);
-assert(base.earth == 0);
-
-base *= bonus;
-assert(base.water == 4 * 5);
-assert(base.air   == 3 * 0);
-assert(base.fire  == 0 * 2);
-assert(base.earth == 0 * 0);
-
-</pre>
-</section>
 
 			</section>
 			<section>

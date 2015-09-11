@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Function EnumSet.opBinary.opBinary</title>
+		<title>Function Enumap.byKeyValue</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,17 +32,32 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Function EnumSet.opBinary.opBinary</h1>
+			<h1>Function Enumap.byKeyValue</h1>
 			<section>
-				<p></p>
+				<p>Return a range of (EnumMember, value) pairs.
+</p>
 
 					<section>
 						<h3>Prototype</h3>
 						<pre class="code prettyprint lang-d prototype">
-auto opBinary(
-&nbsp;&nbsp;typeof(this) other
-);</pre>
+auto byKeyValue();</pre>
 					</section>
+<section><h3>Example</h3>
+
+<pre class="code prettyprint lang-d"><a href="../enumap/Enumap.html">Enumap</a>!(Element, int) elements;
+elements.water = 4;
+elements.air = 3;
+
+foreach(key, value ; elements.byKeyValue) {
+  assert(
+      key == Element.water && value == 4 ||
+      key == Element.air   && value == 3 ||
+      value == 0);
+
+}
+}
+</pre>
+</section>
 
 			</section>
 			<section>

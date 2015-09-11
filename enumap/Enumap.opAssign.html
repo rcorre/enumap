@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Template EnumSet.opUnary</title>
+		<title>Template Enumap.opAssign</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,15 +32,15 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Template EnumSet.opUnary</h1>
+			<h1>Template Enumap.opAssign</h1>
 			<section>
-				<p>Perform a unary operation on each entry.
+				<p>An <a href="../enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a> can be assigned from an array or range of values
 </p>
 
 					<section>
 						<h2>Arguments</h2>
 						<pre class="code prettyprint lang-d prototype">
-template opUnary(string op);</pre>
+template opAssign(T);</pre>
 					</section>
 					<section>
 						<h3>Functions</h3>
@@ -52,12 +52,46 @@ template opUnary(string op);</pre>
 							</tr>
 							<tr>
 								<td>
-									<a href="../enumset/EnumSet.opUnary.opUnary.html">opUnary</a>
+									<a href="../enumap/Enumap.opAssign.opAssign.html">opAssign</a>
 								</td>
 								<td></td>
 							</tr>
 						</table>
 					</section>
+<section><h3>Example</h3>
+<p>Assign an <a href="../enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a> from a static array.
+</p>
+<pre class="code prettyprint lang-d"><a href="../enumap/Enumap.html">Enumap</a>!(Element, int) elements;
+int[elements.length] arr = [1, 2, 3, 4];
+elements = arr;
+
+with (Element) {
+  assert(elements[air]   == 1);
+  assert(elements[earth] == 2);
+  assert(elements[water] == 3);
+  assert(elements[fire]  == 4);
+}
+
+</pre>
+</section>
+<section><h3>Example</h3>
+<p>Assign an <a href="../enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a> from a range
+</p>
+<pre class="code prettyprint lang-d">import std.range : iota;
+
+<a href="../enumap/Enumap.html">Enumap</a>!(Element, int) elements;
+
+with (Element) {
+  elements = iota(0, 4);
+
+  assert(elements[air]   == 0);
+  assert(elements[earth] == 1);
+  assert(elements[water] == 2);
+  assert(elements[fire]  == 3);
+}
+
+</pre>
+</section>
 
 			</section>
 			<section>

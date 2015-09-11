@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Function EnumSet.opIndex</title>
+		<title>Enum member Enumap.length</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -13,7 +13,7 @@
 		<nav id="main-nav">
 						<ul class="tree-view">
 							<li>
-								<a href="../enumset.html" class="selected module">enumset</a>
+								<a href="../enumap.html" class="selected module">enumap</a>
 							</li>
 						</ul>
 				<noscript>
@@ -32,27 +32,25 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Function EnumSet.opIndex</h1>
+			<h1>Enum member Enumap.length</h1>
 			<section>
-				<p> Access the value at the index specified by an enum member.
+				<p>The number of entries in the <code class="prettyprint lang-d"><a href="../enumap/Enumap.html"><code class="prettyprint lang-d">Enumap</code></a></code>
 </p>
-<section>
-<p> Indexing returns a reference, so it can be used as a getter or setter.
-</p>
-</section>
 
 					<section>
-						<h3>Prototype</h3>
+						<h3>Declaration</h3>
 						<pre class="code prettyprint lang-d prototype">
-auto ref opIndex(
-&nbsp;&nbsp;K key
-);</pre>
+struct <a href="../enumap/Enumap.html">Enumap</a>
+{
+	// ...
+	enum length = EnumMembers!K.length;
+	// ...
+}</pre>
 					</section>
 <section><h3>Example</h3>
-
-<pre class="code prettyprint lang-d"><a href="../enumset/EnumSet.html">EnumSet</a>!(Element, int) elements;
-elements[Element.fire] = 4;
-assert(elements[Element.fire] == 4);
+<p>Assuming Element consists of air, earth, water, and fire (4 members):
+</p>
+<pre class="code prettyprint lang-d">static assert(<a href="../enumap/Enumap.html">Enumap</a>!(Element, int).length == 4);
 
 </pre>
 </section>
