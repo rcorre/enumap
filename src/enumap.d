@@ -73,7 +73,7 @@ module enumap;
 
 import std.conv      : to;
 import std.range;
-import std.traits    : EnumMembers;
+import std.traits    : Unqual, EnumMembers;
 import std.typecons  : tuple, staticIota;
 import std.algorithm : map;
 
@@ -183,7 +183,7 @@ struct Enumap(K, V)
    *
    * Indexing returns a reference, so it can be used as a getter or setter.
    */
-  ref auto opIndex(K key) {
+  ref auto opIndex(K key) inout {
     return _store[key];
   }
 
@@ -200,7 +200,7 @@ struct Enumap(K, V)
    * The value is returned by reference, so it can used for assignment.
    * `map.name` is just syntactic sugar for `map[SomeEnum.name]`.
    */
-  ref auto opDispatch(string s)() {
+  ref auto opDispatch(string s)() inout {
     enum key = s.to!K;
     return this[key];
   }
@@ -213,6 +213,35 @@ struct Enumap(K, V)
   }
 
   /// Execute a foreach statement over (EnumMember, value) pairs.
+  int opApply(scope int delegate(K, const V) dg) const {
+    // declare the callee as @nogc so @nogc callers can use foreach
+    // oddly, this works even if dg is non-nogc... huh?
+    // I'm just gonna take this and run before the compiler catches me.
+    auto callme = cast(int delegate(K, const V) @nogc) dg;
+
+    int res = 0;
+
+    foreach(key ; EnumMembers!K) {
+      res = callme(key, this[key]);
+      if (res) break;
+    }
+
+    return res;
+  }
+
+  /// foreach iterates over (EnumMember, value) pairs.
+  @nogc unittest {
+    const auto elements = enumap(Element.water, 4, Element.air, 3);
+
+    foreach(key, value ; elements) {
+      assert(
+          key == Element.water && value == 4 ||
+          key == Element.air   && value == 3 ||
+          value == 0);
+    }
+  }
+
+  /// Execute foreach over (EnumMember, ref value) pairs to modify elements.
   int opApply(scope int delegate(K, ref V) dg) {
     // declare the callee as @nogc so @nogc callers can use foreach
     // oddly, this works even if dg is non-nogc... huh?
@@ -227,20 +256,6 @@ struct Enumap(K, V)
     }
 
     return res;
-  }
-
-  /// foreach iterates over (EnumMember, value) pairs.
-  @nogc unittest {
-    Enumap!(Element, int) elements;
-    elements.water = 4;
-    elements.air   = 3;
-
-    foreach(key, value ; elements) {
-      assert(
-          key == Element.water && value == 4 ||
-          key == Element.air   && value == 3 ||
-          value == 0);
-    }
   }
 
   /// foreach can modify values by ref
@@ -263,15 +278,41 @@ struct Enumap(K, V)
   }
 
   /// Apply an array-wise operation between two `Enumap`s.
-  auto opBinary(string op)(typeof(this) other)
+  auto opBinary(string op)(inout typeof(this) other) const
     if (is(typeof(mixin("V.init"~op~"V.init")) : V))
   {
-    typeof(this) result;
+    Unqual!(typeof(this)) result;
+
     foreach(member ; EnumMembers!K) {
       result[member] = mixin("this[member]"~op~"other[member]");
     }
 
     return result;
+  }
+
+  ///
+  @nogc unittest {
+    immutable base  = enumap(Element.water, 4, Element.air , 3);
+    immutable bonus = enumap(Element.water, 5, Element.fire, 2);
+
+    immutable sum  = base + bonus;
+    immutable diff = base - bonus;
+    immutable prod = base * bonus;
+
+    assert(sum.water == 4 + 5);
+    assert(sum.air   == 3 + 0);
+    assert(sum.fire  == 0 + 2);
+    assert(sum.earth == 0 + 0);
+
+    assert(diff.water == 4 - 5);
+    assert(diff.air   == 3 - 0);
+    assert(diff.fire  == 0 - 2);
+    assert(diff.earth == 0 - 0);
+
+    assert(prod.water == 4 * 5);
+    assert(prod.air   == 3 * 0);
+    assert(prod.fire  == 0 * 2);
+    assert(prod.earth == 0 * 0);
   }
 
   ///
@@ -293,38 +334,8 @@ struct Enumap(K, V)
     assert(inventory.key    == [ "Bronze Key" , "Skeleton Key" ]);
   }
 
-  ///
-  @nogc unittest {
-    Enumap!(Element, int) base;
-    base.water = 4;
-    base.air   = 3;
-
-    Enumap!(Element, int) bonus;
-    bonus.water = 5;
-    bonus.fire  = 2;
-
-    auto sum = base + bonus;
-    auto diff = base - bonus;
-    auto prod = base * bonus;
-
-    assert(sum.water == 4 + 5);
-    assert(sum.air   == 3 + 0);
-    assert(sum.fire  == 0 + 2);
-    assert(sum.earth == 0 + 0);
-
-    assert(diff.water == 4 - 5);
-    assert(diff.air   == 3 - 0);
-    assert(diff.fire  == 0 - 2);
-    assert(diff.earth == 0 - 0);
-
-    assert(prod.water == 4 * 5);
-    assert(prod.air   == 3 * 0);
-    assert(prod.fire  == 0 * 2);
-    assert(prod.earth == 0 * 0);
-  }
-
   /// Perform an in-place operation.
-  auto opOpAssign(string op)(typeof(this) other)
+  auto opOpAssign(string op)(inout typeof(this) other)
     if (is(typeof(this.opBinary!op(other)) : typeof(this)))
   {
     this = this.opBinary!op(other);
@@ -332,8 +343,8 @@ struct Enumap(K, V)
 
   ///
   @nogc unittest {
-    auto base  = enumap(Element.water, 4, Element.air , 3);
-    auto bonus = enumap(Element.water, 5, Element.fire, 2);
+    auto  base  = enumap(Element.water, 4, Element.air , 3);
+    const bonus = enumap(Element.water, 5, Element.fire, 2);
 
     base += bonus;
 
@@ -357,7 +368,7 @@ struct Enumap(K, V)
   }
 
   /// Perform a unary operation on each entry.
-  auto opUnary(string op)()
+  auto opUnary(string op)() const
     if (is(typeof(mixin(op~"V.init")) : V))
   {
     V[length] result = mixin(op~"_store[]");
@@ -365,14 +376,12 @@ struct Enumap(K, V)
   }
 
   @nogc unittest {
-    Enumap!(Element, int) elements;
-    elements.water = 4;
-
+    immutable elements = enumap(Element.water, 4);
     assert((-elements).water == -4);
   }
 
   /// Get a range iterating over the members of the enum `K`.
-  auto byKey() { return only(EnumMembers!K); }
+  auto byKey() const { return only(EnumMembers!K); }
 
   @nogc unittest {
     import std.range     : only;
@@ -385,34 +394,52 @@ struct Enumap(K, V)
   }
 
   /// Get a range iterating over the stored values.
-  auto byValue() { return _store[]; }
+  auto byValue() inout { return _store[]; }
 
+  /// you can use byValue to perform range based operations on the values:
   @nogc unittest {
     import std.range     : iota;
     import std.algorithm : map, equal;
 
-    Enumap!(Element, int) e1 = iota(0, 4);
-    Enumap!(Element, int) e2 = e1.byValue.map!(x => x + 2);
+    const Enumap!(Element, int) e1 = iota(0, 4);
+    const Enumap!(Element, int) e2 = e1.byValue.map!(x => x + 2);
     assert(e2.byValue.equal(iota(2, 6)));
   }
 
-  /// Return a range of (EnumMember, value) pairs.
-  auto byKeyValue() {
+  /// `byValue` supports ref access:
+  @nogc unittest {
+    with (Element) {
+      auto elements = enumap(air, 1, water, 2, fire, 3, earth, 4);
+      foreach(ref val ; elements.byValue) ++val;
+      assert(elements == enumap(air, 2, water, 3, fire, 4, earth, 5));
+    }
+  }
+
+  /**
+   * Return a range of (EnumMember, value) pairs.
+   *
+   * Note that byKeyValue does _not_ support modifying the underlying values by
+   * reference.
+   * For that, you should just use foreach directly (see `opApply`).
+   */
+  auto byKeyValue() const {
     return only(EnumMembers!K).map!(key => tuple(key, this[key]));
   }
 
   ///
   @nogc unittest {
-    Enumap!(Element, int) elements;
-    elements.water = 4;
-    elements.air = 3;
+    import std.typecons  : tuple;
+    import std.algorithm : map;
 
-    foreach(key, value ; elements.byKeyValue) {
+    immutable elements = enumap(Element.water, 4, Element.air, 3);
+
+    auto pairs = elements.byKeyValue.map!(pair => tuple(pair[0], pair[1] + 1));
+
+    foreach(key, value ; pairs) {
       assert(
-          key == Element.water && value == 4 ||
-          key == Element.air   && value == 3 ||
-          value == 0);
-
+          key == Element.water && value == 5 ||
+          key == Element.air   && value == 4 ||
+          value == 1);
     }
   }
 }
@@ -493,4 +520,82 @@ unittest {
   // nogc test
   void donFancyHat(int[Attribute] attrs) { attrs[Attribute.charisma] += 1; }
   @nogc void donFancyHat2(Enumap!(Attribute, int) attrs) { attrs.charisma += 1; }
+}
+
+// constness tests:
+unittest {
+  auto      mmap = enumap(Element.air, 2, Element.water, 4);
+  const     cmap = enumap(Element.air, 2, Element.water, 4);
+  immutable imap = enumap(Element.air, 2, Element.water, 4);
+
+  // value access permitted on all
+  static assert(__traits(compiles, mmap[Element.air] == 2));
+  static assert(__traits(compiles, cmap[Element.air] == 2));
+  static assert(__traits(compiles, imap[Element.air] == 2));
+  static assert(__traits(compiles, mmap.air == 2));
+  static assert(__traits(compiles, cmap.air == 2));
+  static assert(__traits(compiles, imap.air == 2));
+
+  // value setters only permitted if mutable
+  static assert( __traits(compiles, { mmap[Element.air] = 2; }));
+  static assert(!__traits(compiles, { cmap[Element.air] = 2; }));
+  static assert(!__traits(compiles, { imap[Element.air] = 2; }));
+  static assert( __traits(compiles, { mmap.air = 2; }));
+  static assert(!__traits(compiles, { cmap.air = 2; }));
+  static assert(!__traits(compiles, { imap.air = 2; }));
+
+  // readonly foreach permitted on all
+  static assert(__traits(compiles, { foreach(k,v ; mmap) {} }));
+  static assert(__traits(compiles, { foreach(k,v ; cmap) {} }));
+  static assert(__traits(compiles, { foreach(k,v ; imap) {} }));
+
+  // foreach with modification permitted only if mutable
+  static assert( __traits(compiles, { foreach(k, ref v ; mmap) {++v;} }));
+  static assert(!__traits(compiles, { foreach(k, ref v ; cmap) {++v;} }));
+  static assert(!__traits(compiles, { foreach(k, ref v ; imap) {++v;} }));
+
+  // opBinary permitted on all
+  static assert(__traits(compiles, { immutable res = mmap + mmap; }));
+  static assert(__traits(compiles, { immutable res = cmap + cmap; }));
+  static assert(__traits(compiles, { immutable res = imap + imap; }));
+  static assert(__traits(compiles, { immutable res = mmap + imap; }));
+  static assert(__traits(compiles, { immutable res = imap + mmap; }));
+
+  // opBinaryAssign permitted only if mutable
+  static assert( __traits(compiles, { mmap += mmap; }));
+  static assert( __traits(compiles, { mmap += cmap; }));
+  static assert( __traits(compiles, { mmap += imap; }));
+  static assert(!__traits(compiles, { cmap += mmap; }));
+  static assert(!__traits(compiles, { cmap += cmap; }));
+  static assert(!__traits(compiles, { imap += imap; }));
+
+  // opUnary permitted on all
+  static assert(__traits(compiles, { -mmap; }));
+  static assert(__traits(compiles, { -cmap; }));
+  static assert(__traits(compiles, { -imap; }));
+
+  // opUnary permitted on all
+  static assert(__traits(compiles, { -mmap; }));
+  static assert(__traits(compiles, { -cmap; }));
+  static assert(__traits(compiles, { -imap; }));
+
+  // byKey permitted on all
+  static assert(__traits(compiles, { mmap.byKey; }));
+  static assert(__traits(compiles, { cmap.byKey; }));
+  static assert(__traits(compiles, { imap.byKey; }));
+
+  // byValue permitted on all
+  static assert(__traits(compiles, { foreach(v ; mmap.byValue) {}; }));
+  static assert(__traits(compiles, { foreach(v ; cmap.byValue) {}; }));
+  static assert(__traits(compiles, { foreach(v ; imap.byValue) {}; }));
+
+  // byValue with ref assignment permitted only if mutable
+  static assert( __traits(compiles, { foreach(ref v ; mmap.byValue) ++v; }));
+  static assert(!__traits(compiles, { foreach(ref v ; cmap.byValue) ++v; }));
+  static assert(!__traits(compiles, { foreach(ref v ; imap.byValue) ++v; }));
+
+  // byKeyValue permitted on all
+  static assert(__traits(compiles, { foreach(k, v ; mmap.byKeyValue) {} }));
+  static assert(__traits(compiles, { foreach(k, v ; cmap.byKeyValue) {} }));
+  static assert(__traits(compiles, { foreach(k, v ; imap.byKeyValue) {} }));
 }
