@@ -67,8 +67,8 @@ hero.attributes += bonus;
 You dislike garbage day:
 
 ```
-      void donFancyHat(int[Attribute] aa) { aa[Attribute.charisma] += 1; }
-@nogc void donFancyHat(Enumap!(Attribute, int) map) { map.charisma += 1; }
+      void donFancyHat(ref int[Attribute] aa) { aa[Attribute.charisma] += 1; }
+@nogc void donFancyHat(ref Enumap!(Attribute, int) map) { map.charisma += 1; }
 ```
 
 Check the [docs](http://rcorre.github.io/enumap) for the full feature set.
