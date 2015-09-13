@@ -585,9 +585,9 @@ unittest {
   static assert(__traits(compiles, { imap.byKey; }));
 
   // byValue permitted on all
-  static assert(__traits(compiles, { foreach(v ; mmap.byValue) {}; }));
-  static assert(__traits(compiles, { foreach(v ; cmap.byValue) {}; }));
-  static assert(__traits(compiles, { foreach(v ; imap.byValue) {}; }));
+  static assert(__traits(compiles, { foreach(v ; mmap.byValue) {} }));
+  static assert(__traits(compiles, { foreach(v ; cmap.byValue) {} }));
+  static assert(__traits(compiles, { foreach(v ; imap.byValue) {} }));
 
   // byValue with ref assignment permitted only if mutable
   static assert( __traits(compiles, { foreach(ref v ; mmap.byValue) ++v; }));
