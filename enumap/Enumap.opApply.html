@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Alias Enumap.opSlice</title>
+		<title>Enumap.opApply - multiple declarations</title>
 		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
 		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../scripts/jquery.js">/**/</script>
@@ -32,35 +32,63 @@ $('#symbolSearchPane').show();
 				</div>
 		</nav>
 		<div id="main-contents">
-			<h1>Alias Enumap.opSlice</h1>
+			<h1>Enumap.opApply - multiple declarations</h1>
+			<ul>
+				<li>Function Enumap.opApply</li>
+				<li>Function Enumap.opApply</li>
+			</ul>
 			<section>
-				<p>Return a range of (EnumMember, value) pairs.
+				<h2>Function Enumap.opApply</h2>
+				<p>Execute a foreach statement over (EnumMember, value) pairs.
 </p>
 
 					<section>
-						<h3>Declaration</h3>
+						<h3>Prototype</h3>
 						<pre class="code prettyprint lang-d prototype">
-struct <a href="../enumap/Enumap.html">Enumap</a>
-{
-	// ...
-	alias opSlice = <code class="prettyprint lang-d">byKeyValue</code>;
-	// ...
-}</pre>
+int opApply(
+&nbsp;&nbsp;scope int delegate(K, const V) dg
+) const;</pre>
 					</section>
 <section><h3>Example</h3>
 <p>foreach iterates over (EnumMember, value) pairs.
 </p>
-<pre class="code prettyprint lang-d"><a href="../enumap/Enumap.html">Enumap</a>!(Element, int) elements;
-elements.water = 4;
-elements.air   = 3;
+<pre class="code prettyprint lang-d">const auto elements = <a href="../enumap/enumap.html">enumap</a>(Element.water, 4, Element.air, 3);
 
 foreach(key, value ; elements) {
   assert(
       key == Element.water && value == 4 ||
       key == Element.air   && value == 3 ||
       value == 0);
-
 }
+
+</pre>
+</section>
+
+			</section>
+			<section>
+				<h2>Function Enumap.opApply</h2>
+				<p>Execute foreach over (EnumMember, ref value) pairs to modify elements.
+</p>
+
+					<section>
+						<h3>Prototype</h3>
+						<pre class="code prettyprint lang-d prototype">
+int opApply(
+&nbsp;&nbsp;scope int delegate(K, ref V) dg
+);</pre>
+					</section>
+<section><h3>Example</h3>
+<p>foreach can modify values by ref
+</p>
+<pre class="code prettyprint lang-d"><a href="../enumap/Enumap.html">Enumap</a>!(Element, int) elements;
+
+foreach(key, ref value ; elements) {
+  if      (key == Element.air)   value = 4;
+  else if (key == Element.water) value = 2;
+}
+
+assert(elements.air   == 4);
+assert(elements.water == 2);
 
 </pre>
 </section>

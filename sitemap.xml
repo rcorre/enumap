@@ -7,6 +7,8 @@
 <url><loc>http://127.0.0.1/enumap/Enumap.byKeyValue.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.byValue.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.length.html</loc></url>
+<url><loc>http://127.0.0.1/enumap/Enumap.opApply.html</loc></url>
+<url><loc>http://127.0.0.1/enumap/Enumap.opApply.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.opAssign.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.opAssign.opAssign.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.opBinary.html</loc></url>
@@ -16,7 +18,6 @@
 <url><loc>http://127.0.0.1/enumap/Enumap.opIndex.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.opOpAssign.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.opOpAssign.opOpAssign.html</loc></url>
-<url><loc>http://127.0.0.1/enumap/Enumap.opSlice.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.opUnary.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.opUnary.opUnary.html</loc></url>
 <url><loc>http://127.0.0.1/enumap/Enumap.this.html</loc></url>

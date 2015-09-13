@@ -40,8 +40,31 @@ $('#symbolSearchPane').show();
 					<section>
 						<h3>Prototype</h3>
 						<pre class="code prettyprint lang-d prototype">
-auto byValue();</pre>
+{null} byValue();</pre>
 					</section>
+<section><h3>Example</h3>
+<p>you can use <code class="prettyprint lang-d">byValue</code> to perform range based operations on the values:
+</p>
+<pre class="code prettyprint lang-d">import std.range     : iota;
+import std.algorithm : map, equal;
+
+const <a href="../enumap/Enumap.html">Enumap</a>!(Element, int) e1 = iota(0, 4);
+const <a href="../enumap/Enumap.html">Enumap</a>!(Element, int) e2 = e1.byValue.map!(x => x + 2);
+assert(e2.byValue.equal(iota(2, 6)));
+
+</pre>
+</section>
+<section><h3>Example</h3>
+<p><code class="prettyprint lang-d"><code class="prettyprint lang-d">byValue</code></code> supports ref access:
+</p>
+<pre class="code prettyprint lang-d">with (Element) {
+  auto elements = <a href="../enumap/enumap.html">enumap</a>(air, 1, water, 2, fire, 3, earth, 4);
+  foreach(ref val ; elements.byValue) ++val;
+  assert(elements == <a href="../enumap/enumap.html">enumap</a>(air, 2, water, 3, fire, 4, earth, 5));
+}
+
+</pre>
+</section>
 
 			</section>
 			<section>

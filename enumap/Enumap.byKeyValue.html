@@ -34,26 +34,34 @@ $('#symbolSearchPane').show();
 		<div id="main-contents">
 			<h1>Function Enumap.byKeyValue</h1>
 			<section>
-				<p>Return a range of (EnumMember, value) pairs.
+				<p> Return a range of (EnumMember, value) pairs.
 </p>
+<section>
+<p> Note that <code class="prettyprint lang-d">byKeyValue</code> does not_ support modifying the underlying values by
+ reference.
+ For that, you should just use foreach directly (see <code class="prettyprint lang-d"><a href="../enumap/Enumap.opApply.html"><code class="prettyprint lang-d">opApply</code></a></code>).
+</p>
+</section>
 
 					<section>
 						<h3>Prototype</h3>
 						<pre class="code prettyprint lang-d prototype">
-auto byKeyValue();</pre>
+{null} byKeyValue();</pre>
 					</section>
 <section><h3>Example</h3>
 
-<pre class="code prettyprint lang-d"><a href="../enumap/Enumap.html">Enumap</a>!(Element, int) elements;
-elements.water = 4;
-elements.air = 3;
+<pre class="code prettyprint lang-d">import std.typecons  : tuple;
+import std.algorithm : map;
 
-foreach(key, value ; elements.byKeyValue) {
+immutable elements = <a href="../enumap/enumap.html">enumap</a>(Element.water, 4, Element.air, 3);
+
+auto pairs = elements.byKeyValue.map!(pair => tuple(pair[0], pair[1] + 1));
+
+foreach(key, value ; pairs) {
   assert(
-      key == Element.water && value == 4 ||
-      key == Element.air   && value == 3 ||
-      value == 0);
-
+      key == Element.water && value == 5 ||
+      key == Element.air   && value == 4 ||
+      value == 1);
 }
 }
 </pre>

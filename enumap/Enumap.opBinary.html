@@ -60,37 +60,12 @@ template opBinary(string op);</pre>
 					</section>
 <section><h3>Example</h3>
 
-<pre class="code prettyprint lang-d">auto inventory = <a href="../enumap/enumap.html">enumap</a>(
-    ItemType.junk  , [ "Gemstone"        ],
-    ItemType.normal, [ "Sword", "Shield" ],
-    ItemType.key   , [ "Bronze Key"      ]);
+<pre class="code prettyprint lang-d">immutable base  = <a href="../enumap/enumap.html">enumap</a>(Element.water, 4, Element.air , 3);
+immutable bonus = <a href="../enumap/enumap.html">enumap</a>(Element.water, 5, Element.fire, 2);
 
-auto loot = <a href="../enumap/enumap.html">enumap</a>(
-    ItemType.junk  , [ "Potato"       ],
-    ItemType.normal, [ "Potion"       ],
-    ItemType.key   , [ "Skeleton Key" ]);
-
-inventory ~= loot;
-
-assert(inventory.junk   == [ "Gemstone", "Potato"          ]);
-assert(inventory.normal == [ "Sword", "Shield" , "Potion"  ]);
-assert(inventory.key    == [ "Bronze Key" , "Skeleton Key" ]);
-
-</pre>
-</section>
-<section><h3>Example</h3>
-
-<pre class="code prettyprint lang-d"><a href="../enumap/Enumap.html">Enumap</a>!(Element, int) base;
-base.water = 4;
-base.air   = 3;
-
-<a href="../enumap/Enumap.html">Enumap</a>!(Element, int) bonus;
-bonus.water = 5;
-bonus.fire  = 2;
-
-auto sum = base + bonus;
-auto diff = base - bonus;
-auto prod = base * bonus;
+immutable sum  = base + bonus;
+immutable diff = base - bonus;
+immutable prod = base * bonus;
 
 assert(sum.water == 4 + 5);
 assert(sum.air   == 3 + 0);
@@ -106,6 +81,26 @@ assert(prod.water == 4 * 5);
 assert(prod.air   == 3 * 0);
 assert(prod.fire  == 0 * 2);
 assert(prod.earth == 0 * 0);
+
+</pre>
+</section>
+<section><h3>Example</h3>
+
+<pre class="code prettyprint lang-d">auto inventory = <a href="../enumap/enumap.html">enumap</a>(
+    ItemType.junk  , [ "Gemstone"        ],
+    ItemType.normal, [ "Sword", "Shield" ],
+    ItemType.key   , [ "Bronze Key"      ]);
+
+auto loot = <a href="../enumap/enumap.html">enumap</a>(
+    ItemType.junk  , [ "Potato"       ],
+    ItemType.normal, [ "Potion"       ],
+    ItemType.key   , [ "Skeleton Key" ]);
+
+inventory ~= loot;
+
+assert(inventory.junk   == [ "Gemstone", "Potato"          ]);
+assert(inventory.normal == [ "Sword", "Shield" , "Potion"  ]);
+assert(inventory.key    == [ "Bronze Key" , "Skeleton Key" ]);
 
 </pre>
 </section>
