@@ -98,8 +98,10 @@ import std.algorithm : map;
 struct Enumap(K, V)
   if(EnumMembers!K == staticIota!(0, EnumMembers!K.length))
 {
+  private static immutable _keys = [EnumMembers!K];
+
   /// The number of entries in the `Enumap`
-  enum length = EnumMembers!K.length;
+  static immutable length = _keys.length;
 
   /// Assuming Element consists of air, earth, water, and fire (4 members):
   unittest {
@@ -222,7 +224,7 @@ struct Enumap(K, V)
 
     int res = 0;
 
-    foreach(key ; EnumMembers!K) {
+    foreach(key ; _keys) {
       res = callme(key, this[key]);
       if (res) break;
     }
@@ -252,7 +254,7 @@ struct Enumap(K, V)
 
     int res = 0;
 
-    foreach(key ; EnumMembers!K) {
+    foreach(key ; _keys) {
       res = callme(key, this[key]);
       if (res) break;
     }
@@ -285,7 +287,7 @@ struct Enumap(K, V)
   {
     Unqual!(typeof(this)) result;
 
-    foreach(member ; EnumMembers!K) {
+    foreach(member ; _keys) {
       result[member] = mixin("this[member]"~op~"other[member]");
     }
 
@@ -383,7 +385,7 @@ struct Enumap(K, V)
   }
 
   /// Get a range iterating over the members of the enum `K`.
-  auto byKey() const { return only(EnumMembers!K); }
+  auto byKey() const { return _keys; }
 
   @nogc unittest {
     import std.range     : only;
@@ -425,7 +427,7 @@ struct Enumap(K, V)
    * For that, you should just use foreach directly (see `opApply`).
    */
   auto byKeyValue() const {
-    return only(EnumMembers!K).map!(key => tuple(key, this[key]));
+    return _keys[].map!(key => tuple(key, this[key]));
   }
 
   ///
