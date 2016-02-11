@@ -217,7 +217,8 @@ struct Enumap(K, V)
     // declare the callee as @nogc so @nogc callers can use foreach
     // oddly, this works even if dg is non-nogc... huh?
     // I'm just gonna take this and run before the compiler catches me.
-    auto callme = cast(int delegate(K, const V) @nogc) dg;
+    alias nogcDelegate = @nogc int delegate(K, const V);
+    auto callme = cast(nogcDelegate) dg;
 
     int res = 0;
 
@@ -246,7 +247,8 @@ struct Enumap(K, V)
     // declare the callee as @nogc so @nogc callers can use foreach
     // oddly, this works even if dg is non-nogc... huh?
     // I'm just gonna take this and run before the compiler catches me.
-    auto callme = cast(int delegate(K, ref V) @nogc) dg;
+    alias nogcDelegate = @nogc int delegate(K, ref V);
+    auto callme = cast(nogcDelegate) dg;
 
     int res = 0;
 
@@ -449,7 +451,7 @@ struct Enumap(K, V)
    *
    * Any values not specified default to `V.init`.
    */
-auto enumap(T...)(T pairs) @nogc if (T.length >= 2 && T.length % 2 == 0) {
+@nogc auto enumap(T...)(T pairs) if (T.length >= 2 && T.length % 2 == 0) {
   alias K = T[0];
   alias V = T[1];
 
