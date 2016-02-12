@@ -427,7 +427,18 @@ struct Enumap(K, V)
    * For that, you should just use foreach directly (see `opApply`).
    */
   auto byKeyValue() const {
-    return _keys[].map!(key => tuple(key, this[key]));
+    alias StoreType = typeof(_store);
+
+    struct Result {
+      private StoreType _source;
+      private int _idx;
+
+      bool empty() { return _idx >= length; }
+      auto front() { return tuple(_keys[_idx], _source[_idx]); }
+      void popFront() { ++_idx; }
+    }
+
+    return Result(_store);
   }
 
   ///
