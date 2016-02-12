@@ -520,7 +520,9 @@ unittest {
 
   attributes[Attribute.strength] = 10;
 
-  attributes = generate!(() => uniform!"[]"(1, 20)).take(6);
+  // generate is not implemented for GDC (maybe others too?)
+  static if (is(typeof(std.range.generate)))
+    attributes = generate!(() => uniform!"[]"(1, 20)).take(6);
 
   // make sure accessors compile:
   if (attributes[Attribute.wisdom] < 5) { }
