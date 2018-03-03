@@ -71,11 +71,12 @@
  */
 module enumap;
 
+import std.algorithm : map;
 import std.conv      : to;
+import std.meta      : aliasSeqOf;
 import std.range;
 import std.traits    : Unqual, EnumMembers;
-import std.typecons  : tuple, staticIota;
-import std.algorithm : map;
+import std.typecons  : tuple;
 
 /**
  * A structure that maps each member of an enum to a single value.
@@ -96,7 +97,7 @@ import std.algorithm : map;
  * V = The type of value stored for each enum member
  */
 struct Enumap(K, V)
-  if(EnumMembers!K == staticIota!(0, EnumMembers!K.length))
+  if(EnumMembers!K == aliasSeqOf!(EnumMembers!K.length.iota))
 {
   private static immutable _keys = [EnumMembers!K];
 
@@ -537,6 +538,16 @@ unittest {
   // nogc test
   void donFancyHat(int[Attribute] attrs) { attrs[Attribute.charisma] += 1; }
   @nogc void donFancyHat2(Enumap!(Attribute, int) attrs) { attrs.charisma += 1; }
+}
+
+// The enum members must have ascending values in sequence, from 0 on.
+unittest {
+  enum Acceptable { zero = 0, one = 1, two = 2, three = 3 }
+  enum WrongOrder { zero = 0, one = 2, two = 1, three = 3 }
+  enum WrongStart { zero = 3, one = 4, two = 5, three = 6 }
+  assert(__traits(compiles, enumap!(Acceptable, int)));
+  assert(!__traits(compiles, enumap!(WrongOrder, int)));
+  assert(!__traits(compiles, enumap!(WrongStart, int)));
 }
 
 // constness tests:
